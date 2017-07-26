@@ -1,0 +1,34 @@
+name: jaguar_serializer_cli
+version: 0.4.0-dev
+description: Platform and format agnostic serializer built using source_gen
+authors:
+- Ravi Teja Gudapati <tejainece@gmail.com>
+- Kevin Segaud <segaud.kevin@gmail.com>
+- Hadrien Lejard <hadrien.lejard@gmail.com>
+homepage: https://github.com/Jaguar-dart/jaguar_serializer
+documentation:
+
+executables:
+  serializer:
+
+environment:
+  sdk: '>=1.20.1 <2.0.0'
+
+dependencies:
+  source_gen: ^0.6.1
+  build: ">=0.9.3 <0.10.0"
+  build_runner: ">=0.3.4 <0.4.0"
+  # source_gen_help: '>=0.0.4 <0.1.0'
+  jaguar_generator_config: '>=0.0.1 <0.1.0'
+  jaguar_serializer: # ^0.4.0
+    path: ../jaguar_serializer
+
+
+transformers:
+- test/pub_serve:
+    $include: test/all_browser_test.dart
+- $dart2js:
+    minify: true
+
+dev_dependencies:
+  test: ^0.12.0
