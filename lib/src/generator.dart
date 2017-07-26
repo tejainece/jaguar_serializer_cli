@@ -10,7 +10,7 @@ import 'package:analyzer/dart/constant/value.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'package:jaguar_serializer/serializer.dart';
+import 'package:jaguar_serializer/jaguar_serializer.dart';
 
 import 'models/models.dart';
 import 'common/common.dart';

@@ -79,7 +79,7 @@ class Writer {
       _customsProcessors.add("$key${customProcessor.instantiationString}");
       _w.writeln(
           'final ${customProcessor.instantiationString} $key${customProcessor
-              .instantiationString} = const ${customProcessor.instantiationString}(#$key);');
+              .instantiationString} = const ${customProcessor.instantiationString}();');
     }
   }
 

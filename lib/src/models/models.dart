@@ -4,7 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/type.dart';
 
-import 'package:jaguar_serializer/serializer.dart';
+import 'package:jaguar_serializer/jaguar_serializer.dart';
 
 import '../common/common.dart';
 
@@ -191,8 +191,7 @@ class Instantiator {
 
     map.forEach((DartObject k, DartObject v) {
       final String key = k.toStringValue();
-      //TODO
-      final value = new FieldProcessorInfo(v.toTypeValue().displayName);
+      final value = new FieldProcessorInfo(v.type.displayName);
 
       processors[key] = value;
     });
@@ -215,28 +214,32 @@ class Instantiator {
     });
   }
 
-  Model parseModel(ClassElement el, SerializerInfo info, bool includeByDefault) {
+  Model parseModel(
+      ClassElement el, SerializerInfo info, bool includeByDefault) {
     final mod = new Model();
 
     final accessors = <PropertyAccessorElement>[];
     accessors.addAll(el.accessors);
-    el.allSupertypes.forEach((InterfaceType i) => accessors.addAll(i.accessors));
+    el.allSupertypes
+        .forEach((InterfaceType i) => accessors.addAll(i.accessors));
 
     accessors
         .where((PropertyAccessorElement field) =>
-    !field.isStatic && !field.isPrivate)
+            !field.isStatic && !field.isPrivate)
         .forEach((PropertyAccessorElement field) {
-      if(field.displayName == 'runtimeType') return;
-      if(field.displayName == 'hashCode') return;
+      if (field.displayName == 'runtimeType') return;
+      if (field.displayName == 'hashCode') return;
 
       if (field.isGetter) {
-        if (includeByDefault || info.to[field.displayName] != null) {
+        if (info.to[field.displayName] != null ||
+            (includeByDefault && !info.to.containsKey(field.displayName))) {
           mod.addTo(new ModelField(field.displayName, field.returnType));
         }
       }
 
       if (field.isSetter) {
-        if (includeByDefault || info.from[field.displayName] != null) {
+        if (info.from[field.displayName] != null ||
+            (includeByDefault && !info.from.containsKey(field.displayName))) {
           mod.addFrom(new ModelField(
               field.displayName, field.type.parameters.first.type));
         }
