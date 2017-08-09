@@ -1,0 +1,1 @@
+import 'package:jaguar_serializer/jaguar_serializer.dart';
