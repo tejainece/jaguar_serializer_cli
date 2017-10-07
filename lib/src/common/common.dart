@@ -29,7 +29,21 @@ const isNum = const TypeChecker.fromRuntime(num);
 
 const isBool = const TypeChecker.fromRuntime(bool);
 
+const isProperty = const TypeChecker.fromRuntime(Property);
+
 const isFieldProcessor = const TypeChecker.fromRuntime(FieldProcessor);
+
+const isNullable = const TypeChecker.fromRuntime(Nullable);
+
+const isNonNullable = const TypeChecker.fromRuntime(NonNullable);
+
+const isDefaultStringValue = const TypeChecker.fromRuntime(DefaultStringValue);
+
+const isDefaultDoubleValue = const TypeChecker.fromRuntime(DefaultDoubleValue);
+
+const isDefaultIntValue = const TypeChecker.fromRuntime(DefaultIntValue);
+
+const isDefaultBoolValue = const TypeChecker.fromRuntime(DefaultBoolValue);
 
 bool isBuiltin(DartType type) {
   if (isString.isExactlyType(type)) return true;

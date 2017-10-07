@@ -27,10 +27,8 @@ class WriterInfo {
 
   final Map<String, FieldProcessorInfo> processors;
 
-  final bool nullableFields;
-
   WriterInfo(this.name, this.modelName, this.modelString, this.to, this.from,
-      this.processors, this.nullableFields);
+      this.processors);
 
   factory WriterInfo.fromInfo(SerializerInfo info) {
     List<FieldTo> tos = <FieldTo>[];
@@ -59,6 +57,6 @@ class WriterInfo {
     final String modelString = info.modelString ?? modelName;
 
     return new WriterInfo(
-        info.name, modelName, modelString, tos, froms, info.processors, info.nullableFields);
+        info.name, modelName, modelString, tos, froms, info.processors);
   }
 }

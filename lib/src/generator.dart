@@ -73,7 +73,6 @@ final Logger _log = new Logger("SerializerGenerator");
 
 /// source_gen hook to generate serializer
 class SerializerGenerator extends Generator {
-
   const SerializerGenerator();
 
   final _onlyClassMsg =

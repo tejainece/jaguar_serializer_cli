@@ -67,7 +67,11 @@ class SerializerInfo {
 
   Model model;
 
-  final nullableFields;
+  final Map<String, bool> nullableFields;
+
+  final bool globalNullableFields;
+
+  final Map<String, String> defaultValues;
 
   SerializerInfo(this.name, this.modelType,
       {this.includeByDefault,
@@ -77,7 +81,9 @@ class SerializerInfo {
       this.processors,
       this.providers,
       this.model,
-      this.nullableFields: false});
+      this.nullableFields,
+      this.globalNullableFields,
+      this.defaultValues});
 }
 
 /// Instantiates [GenSerializer] from [DartObject]
@@ -110,9 +116,15 @@ class Instantiator {
 
   Model model;
 
+  Map<String, bool> nullableFields = {};
+
+  Map<String, String> defaultValues = {};
+
   Instantiator(this.element, this.obj);
 
   SerializerInfo instantiate() {
+    final bool nullable = obj.getField('nullableFields').toBoolValue();
+
     _makeName();
     _makeModelType();
     _makeIncludeByDefault();
@@ -122,8 +134,6 @@ class Instantiator {
     _makeProcessors();
     _makeSerializers();
 
-    bool nullableFields = obj.getField('nullableFields').toBoolValue();
-
     final ret = new SerializerInfo(name, modelType,
         includeByDefault: includeByDefault,
         modelString: modelString,
@@ -132,7 +142,9 @@ class Instantiator {
         processors: processors,
         providers: providers,
         model: model,
-        nullableFields: nullableFields);
+        nullableFields: nullableFields,
+        globalNullableFields: nullable,
+        defaultValues: defaultValues);
     ret.model = parseModel(modelType.element, ret, includeByDefault);
     return ret;
   }
@@ -141,10 +153,12 @@ class Instantiator {
 
   void _makeModelType() {
     if (!isSerializer.isSuperTypeOf(element.type)) {
-      throw new JaguarCliException('serializers must be sub-type of Serializer!');
+      throw new JaguarCliException(
+          'serializers must be sub-type of Serializer!');
     }
 
-    InterfaceType i = element.allSupertypes.firstWhere((InterfaceType i) => isSerializer.isExactly(i.element));
+    InterfaceType i = element.allSupertypes
+        .firstWhere((InterfaceType i) => isSerializer.isExactly(i.element));
     modelType = i.typeArguments.first;
 
     if (modelType.isDynamic) {
@@ -152,36 +166,58 @@ class Instantiator {
     }
   }
 
-  void _makeIncludeByDefault() => includeByDefault = obj.getField('includeByDefault').toBoolValue() ?? true;
+  void _makeIncludeByDefault() =>
+      includeByDefault = obj.getField('includeByDefault').toBoolValue() ?? true;
 
-  void _makeModelString() => modelString = obj.getField('modelName').toStringValue();
+  void _makeModelString() =>
+      modelString = obj.getField('modelName').toStringValue();
 
   void _makeFields() {
     final Map<DartObject, DartObject> map = obj.getField('fields').toMapValue();
     map.forEach((DartObject dKey, DartObject values) {
-      final List<DartObject> list = values.toListValue();
-      list.forEach((DartObject dV) {
-        final String key = dKey.toStringValue();
-        if (isEncodeOnly.isExactlyType(dV.type)) {
-          to[key] = dV.getField('alias').toStringValue();
-          from[key] = null;
-        } else if (isDecodeOnly.isExactlyType(dV.type)) {
-          to[key] = null;
-          from[key] = dV.getField('alias').toStringValue();
-        } else if (isEnDecode.isExactlyType(dV.type)) {
-          to[key] = dV.getField('alias').toStringValue();
-          from[key] = dV.getField('alias').toStringValue();
-        } else if (isIgnore.isExactlyType(dV.type)) {
-          to[key] = null;
-          from[key] = null;
-        } else if (isFieldProcessor.isAssignableFromType(dV.type)) {
-          processors[key] = new FieldProcessorInfo(dV.type.displayName);
-        } else {
-          throw new JaguarCliException(
-              'Invalid property specification at "$modelType.${key}" with "${dV.type.displayName}".');
-        }
-      });
+      if (isList.isExactlyType(values.type)) {
+        final List<DartObject> list = values.toListValue();
+        list.forEach((DartObject dV) {
+          _processField(dKey, dV);
+        });
+      } else if (isProperty.isAssignableFromType(values.type)) {
+        _processField(dKey, values);
+      }
     });
+  }
+
+  void _processField(DartObject dKey, DartObject dV) {
+    final String key = dKey.toStringValue();
+    if (isEncodeOnly.isExactlyType(dV.type)) {
+      to[key] = dV.getField('alias').toStringValue();
+      from[key] = null;
+    } else if (isDecodeOnly.isExactlyType(dV.type)) {
+      to[key] = null;
+      from[key] = dV.getField('alias').toStringValue();
+    } else if (isEnDecode.isExactlyType(dV.type)) {
+      to[key] = dV.getField('alias').toStringValue();
+      from[key] = dV.getField('alias').toStringValue();
+    } else if (isIgnore.isExactlyType(dV.type)) {
+      to[key] = null;
+      from[key] = null;
+    } else if (isFieldProcessor.isAssignableFromType(dV.type)) {
+      processors[key] = new FieldProcessorInfo(dV.type.displayName);
+    } else if (isNonNullable.isExactlyType(dV.type)) {
+      nullableFields[key] = false;
+    } else if (isNullable.isExactlyType(dV.type)) {
+      nullableFields[key] = true;
+    } else if (isDefaultStringValue.isExactlyType(dV.type)) {
+      defaultValues[key] = '"${dV.getField('value').toStringValue()}"';
+    } else if (isDefaultBoolValue.isExactlyType(dV.type)) {
+      defaultValues[key] = dV.getField('value').toBoolValue().toString();
+    } else if (isDefaultDoubleValue.isExactlyType(dV.type)) {
+      defaultValues[key] = dV.getField('value').toDoubleValue().toString();
+    } else if (isDefaultIntValue.isExactlyType(dV.type)) {
+      defaultValues[key] = dV.getField('value').toIntValue().toString();
+    } else {
+      throw new JaguarCliException(
+          'Invalid property specification at "$modelType.${key}" with "${dV.type.displayName}".');
+    }
   }
 
   void _makeIgnore() {
@@ -197,7 +233,8 @@ class Instantiator {
 
   @deprecated
   void _makeProcessors() {
-    final Map<DartObject, DartObject> map = obj.getField('processors').toMapValue();
+    final Map<DartObject, DartObject> map =
+        obj.getField('processors').toMapValue();
 
     map.forEach((DartObject k, DartObject v) {
       final String key = k.toStringValue();
@@ -211,39 +248,48 @@ class Instantiator {
     final List<DartObject> list = obj.getField('serializers').toListValue();
     list.map((DartObject obj) => obj.toTypeValue()).forEach((DartType t) {
       if (!isSerializer.isSuperTypeOf(t)) {
-        throw new JaguarCliException('serializers must be sub-type of Serializer!');
+        throw new JaguarCliException(
+            'serializers must be sub-type of Serializer!');
       }
 
       final ClassElement v = t.element;
-      final InterfaceType i = v.allSupertypes.where((InterfaceType i) => isSerializer.isExactly(i.element)).first;
+      final InterfaceType i = v.allSupertypes
+          .where((InterfaceType i) => isSerializer.isExactly(i.element))
+          .first;
 
       final DartType key = i.typeArguments[0];
       providers[key] = v;
     });
   }
 
-  Model parseModel(ClassElement el, SerializerInfo info, bool includeByDefault) {
+  Model parseModel(
+      ClassElement el, SerializerInfo info, bool includeByDefault) {
     final mod = new Model();
 
     final accessors = <PropertyAccessorElement>[];
     accessors.addAll(el.accessors);
-    el.allSupertypes.forEach((InterfaceType i) => accessors.addAll(i.accessors));
+    el.allSupertypes
+        .forEach((InterfaceType i) => accessors.addAll(i.accessors));
 
     accessors
-        .where((PropertyAccessorElement field) => !field.isStatic && !field.isPrivate)
+        .where((PropertyAccessorElement field) =>
+            !field.isStatic && !field.isPrivate)
         .forEach((PropertyAccessorElement field) {
       if (field.displayName == 'runtimeType') return;
       if (field.displayName == 'hashCode') return;
 
       if (field.isGetter) {
-        if (info.to[field.displayName] != null || (includeByDefault && !info.to.containsKey(field.displayName))) {
+        if (info.to[field.displayName] != null ||
+            (includeByDefault && !info.to.containsKey(field.displayName))) {
           mod.addTo(new ModelField(field.displayName, field.returnType));
         }
       }
 
       if (field.isSetter) {
-        if (info.from[field.displayName] != null || (includeByDefault && !info.from.containsKey(field.displayName))) {
-          mod.addFrom(new ModelField(field.displayName, field.type.parameters.first.type));
+        if (info.from[field.displayName] != null ||
+            (includeByDefault && !info.from.containsKey(field.displayName))) {
+          mod.addFrom(new ModelField(
+              field.displayName, field.type.parameters.first.type));
         }
       }
     });
