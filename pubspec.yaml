@@ -20,7 +20,10 @@ dependencies:
   build_runner: ">=0.3.4 <0.4.0"
   # source_gen_help: '>=0.0.4 <0.1.0'
   jaguar_generator_config: '>=0.0.1 <0.1.0'
-  jaguar_serializer: ^0.5.0
+  jaguar_serializer: #^0.5.0
+    git:
+      url: https://github.com/Jaguar-dart/jaguar_serializer.git
+      ref: 0.5.0
 
 transformers:
 - test/pub_serve:
