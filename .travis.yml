@@ -8,7 +8,7 @@ dart_task:
 
 dart:
   - stable
-  - dev
+#  - dev
 
 cache:
   directories:
