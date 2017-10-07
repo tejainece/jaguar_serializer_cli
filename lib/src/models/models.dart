@@ -73,6 +73,8 @@ class SerializerInfo {
 
   final Map<String, String> defaultValues;
 
+  final Map<String, bool> defaultValuesFromConstructor;
+
   SerializerInfo(this.name, this.modelType,
       {this.includeByDefault,
       this.modelString,
@@ -83,7 +85,8 @@ class SerializerInfo {
       this.model,
       this.nullableFields,
       this.globalNullableFields,
-      this.defaultValues});
+      this.defaultValues,
+      this.defaultValuesFromConstructor});
 }
 
 /// Instantiates [GenSerializer] from [DartObject]
@@ -120,6 +123,8 @@ class Instantiator {
 
   Map<String, String> defaultValues = {};
 
+  Map<String, bool> defaultValueFromConstructor = {};
+
   Instantiator(this.element, this.obj);
 
   SerializerInfo instantiate() {
@@ -129,9 +134,9 @@ class Instantiator {
     _makeModelType();
     _makeIncludeByDefault();
     _makeModelString();
+    _makeProcessors();
     _makeFields();
     _makeIgnore();
-    _makeProcessors();
     _makeSerializers();
 
     final ret = new SerializerInfo(name, modelType,
@@ -144,7 +149,8 @@ class Instantiator {
         model: model,
         nullableFields: nullableFields,
         globalNullableFields: nullable,
-        defaultValues: defaultValues);
+        defaultValues: defaultValues,
+        defaultValuesFromConstructor: defaultValueFromConstructor);
     ret.model = parseModel(modelType.element, ret, includeByDefault);
     return ret;
   }
@@ -174,49 +180,55 @@ class Instantiator {
 
   void _makeFields() {
     final Map<DartObject, DartObject> map = obj.getField('fields').toMapValue();
-    map.forEach((DartObject dKey, DartObject values) {
-      if (isList.isExactlyType(values.type)) {
-        final List<DartObject> list = values.toListValue();
-        list.forEach((DartObject dV) {
-          _processField(dKey, dV);
-        });
-      } else if (isProperty.isAssignableFromType(values.type)) {
-        _processField(dKey, values);
-      }
+    map.forEach((DartObject dKey, DartObject dV) {
+      _processField(dKey, dV);
     });
   }
 
+  bool _notNull(DartObject obj) => obj != null && obj.isNull == false;
+
   void _processField(DartObject dKey, DartObject dV) {
     final String key = dKey.toStringValue();
-    if (isEncodeOnly.isExactlyType(dV.type)) {
-      to[key] = dV.getField('alias').toStringValue();
-      from[key] = null;
-    } else if (isDecodeOnly.isExactlyType(dV.type)) {
-      to[key] = null;
-      from[key] = dV.getField('alias').toStringValue();
-    } else if (isEnDecode.isExactlyType(dV.type)) {
-      to[key] = dV.getField('alias').toStringValue();
-      from[key] = dV.getField('alias').toStringValue();
-    } else if (isIgnore.isExactlyType(dV.type)) {
-      to[key] = null;
-      from[key] = null;
-    } else if (isFieldProcessor.isAssignableFromType(dV.type)) {
-      processors[key] = new FieldProcessorInfo(dV.type.displayName);
-    } else if (isNonNullable.isExactlyType(dV.type)) {
-      nullableFields[key] = false;
-    } else if (isNullable.isExactlyType(dV.type)) {
-      nullableFields[key] = true;
-    } else if (isDefaultStringValue.isExactlyType(dV.type)) {
-      defaultValues[key] = '"${dV.getField('value').toStringValue()}"';
-    } else if (isDefaultBoolValue.isExactlyType(dV.type)) {
-      defaultValues[key] = dV.getField('value').toBoolValue().toString();
-    } else if (isDefaultDoubleValue.isExactlyType(dV.type)) {
-      defaultValues[key] = dV.getField('value').toDoubleValue().toString();
-    } else if (isDefaultIntValue.isExactlyType(dV.type)) {
-      defaultValues[key] = dV.getField('value').toIntValue().toString();
-    } else {
-      throw new JaguarCliException(
-          'Invalid property specification at "$modelType.${key}" with "${dV.type.displayName}".');
+
+    to[key] = key;
+    from[key] = key;
+
+    if (_notNull(dV.getField('encodeTo'))) {
+      to[key] = dV.getField('encodeTo').toStringValue();
+    }
+
+    if (_notNull(dV.getField('decodeFrom'))) {
+      from[key] = dV.getField('decodeFrom').toStringValue();
+    }
+
+    if (_notNull(dV.getField('processor'))) {
+      processors[key] =
+          new FieldProcessorInfo(dV.getField('processor').type.displayName);
+    }
+
+    if (_notNull(dV.getField('isNullable'))) {
+      nullableFields[key] = dV.getField('isNullable').toBoolValue();
+    }
+
+    if (_notNull(dV.getField('valueFromConstructor'))) {
+      defaultValueFromConstructor[key] =
+          dV.getField('valueFromConstructor').toBoolValue();
+    }
+
+    if (_notNull(dV.getField('defaultsTo'))) {
+      final defaultField = dV.getField('defaultsTo');
+      if (isString.isExactlyType(defaultField.type)) {
+        defaultValues[key] = '"${defaultField.toStringValue()}"';
+      } else if (isBool.isExactlyType(defaultField.type)) {
+        defaultValues[key] = defaultField.toBoolValue().toString();
+      } else if (isDouble.isExactlyType(defaultField.type)) {
+        defaultValues[key] = defaultField.toDoubleValue().toString();
+      } else if (isInt.isExactlyType(defaultField.type)) {
+        defaultValues[key] = defaultField.toIntValue().toString();
+      } else {
+        throw new JaguarCliException(
+            "Invalid value for 'defaultsTo' at '$modelType.${key}'");
+      }
     }
   }
 

@@ -164,7 +164,9 @@ class Writer {
     _w.write('model.${item.name} = ');
     if (!item.nullable && item.defaultValue != null) {
       _w.write(writer.generate('map["${item.key}"] ?? ${item.defaultValue}'));
-    } else if (!item.nullable && item.defaultValue == null) {
+    } else if (!item.nullable &&
+        item.defaultValue == null &&
+        item.defaultValueFromConstructor) {
       _w.write(writer.generate('map["${item.key}"]'));
       _w.write(' ?? model.${item.name}');
     } else {

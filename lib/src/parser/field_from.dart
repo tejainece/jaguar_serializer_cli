@@ -11,8 +11,10 @@ class FieldFrom {
 
   final bool nullable;
 
-  FieldFrom(
-      this.key, this.name, this.property, this.defaultValue, this.nullable);
+  final bool defaultValueFromConstructor;
+
+  FieldFrom(this.key, this.name, this.property, this.defaultValue,
+      this.defaultValueFromConstructor, this.nullable);
 }
 
 abstract class PropertyFrom {
@@ -103,7 +105,7 @@ PropertyFrom _parsePropertyFrom(
 
     if (ser == null) {
       throw new JaguarCliException(
-          "Serializer not found for '${type.displayName} $fieldName'");
+          "Serializer not found for '${type.displayName} $fieldName'  in '${info.modelType}'");
     }
 
     return new SerializedPropertyFrom(ser.displayName);
@@ -115,6 +117,12 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
 
   if (info.defaultValues.containsKey(field.name)) {
     defaultValue = info.defaultValues[field.name];
+  }
+
+  bool defaultValueFromConstructor = false;
+
+  if (info.defaultValuesFromConstructor.containsKey(field.name)) {
+    defaultValueFromConstructor = info.defaultValuesFromConstructor[field.name];
   }
 
   bool nullable = info.globalNullableFields;
@@ -129,6 +137,7 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
         field.name,
         new CustomPropertyFrom("${field.name}$instStr"),
         defaultValue,
+        defaultValueFromConstructor,
         nullable);
   } else {
     return new FieldFrom(
@@ -136,6 +145,7 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
         field.name,
         _parsePropertyFrom(info, field.name, field.type),
         defaultValue,
+        defaultValueFromConstructor,
         nullable);
   }
 }

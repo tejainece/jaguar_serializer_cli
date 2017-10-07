@@ -87,7 +87,7 @@ PropertyTo _parsePropertyTo(
 
     if (ser == null) {
       throw new JaguarCliException(
-          "Serializer not found for '${type.displayName} $fieldName'");
+          "Serializer not found for '${type.displayName} $fieldName' in '${info.modelType}'");
     }
 
     return new SerializedPropertyTo(ser.displayName);
