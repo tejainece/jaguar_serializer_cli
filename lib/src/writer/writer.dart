@@ -99,7 +99,9 @@ class Writer {
         'Map toMap($modelName model, {bool withType: false, String typeKey}) {');
     _w.writeln(r'Map ret = new Map();');
 
-    _w.writeln('if(model != null) {');
+    if (!info.nullableFields) {
+      _w.writeln('if(model != null) {');
+    }
 
     for (FieldTo item in info.to) {
       _toItemWriter(item);
@@ -107,7 +109,9 @@ class Writer {
 
     _typeKey();
 
-    _w.writeln('}');
+    if (!info.nullableFields) {
+      _w.writeln('}');
+    }
 
     _w.writeln(r'return ret;');
     _w.writeln(r'}');
@@ -124,14 +128,18 @@ class Writer {
   void _toItemWriter(FieldTo item) {
     final String itemStr = 'model.${item.name}';
 
-    _w.writeln('if($itemStr != null) {');
+    if (!info.nullableFields) {
+      _w.writeln('if($itemStr != null) {');
+    }
 
     _w.write('ret["${item.key}"] = ');
     ToItemWriter writer = new ToItemWriter(item.property);
     _w.write(writer.generate('model.${item.name}'));
     _w.write(';');
 
-    _w.writeln('}');
+    if (!info.nullableFields) {
+      _w.writeln('}');
+    }
   }
 
   void _fromWriter() {

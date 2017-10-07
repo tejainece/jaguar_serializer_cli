@@ -3,6 +3,7 @@ library jaguar.generator.phase;
 
 import 'dart:io';
 import 'package:build_runner/build_runner.dart';
+import 'package:jaguar_serializer_cli/src/common/common.dart';
 import 'package:source_gen/source_gen.dart';
 
 import '../generator.dart';
@@ -44,7 +45,7 @@ PhaseGroup phaseGroup({String configFileName: jaguarSerializerConfigFile}) {
   }
 
   if (config.pubspec.projectName == null) {
-    throw "Could not find the project name";
+    throw new JaguarCliException("Could not find the project name");
   }
 
   if (config.serializers == null) {

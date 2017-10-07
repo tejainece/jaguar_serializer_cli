@@ -3,31 +3,33 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 
-final isSerializer = new TypeChecker.fromRuntime(Serializer);
+const isSerializer = const TypeChecker.fromRuntime(Serializer);
 
-final isGenSerializer = new TypeChecker.fromRuntime(GenSerializer);
+const isGenSerializer = const TypeChecker.fromRuntime(GenSerializer);
 
-final isEncodeOnly = new TypeChecker.fromRuntime(EncodeOnly);
+const isEncodeOnly = const TypeChecker.fromRuntime(EncodeOnly);
 
-final isDecodeOnly = new TypeChecker.fromRuntime(DecodeOnly);
+const isDecodeOnly = const TypeChecker.fromRuntime(DecodeOnly);
 
-final isEnDecode = new TypeChecker.fromRuntime(EnDecode);
+const isEnDecode = const TypeChecker.fromRuntime(EnDecode);
 
-final isIgnore = new TypeChecker.fromRuntime(Ignore);
+const isIgnore = const TypeChecker.fromRuntime(Ignore);
 
-final isList = new TypeChecker.fromRuntime(List);
+const isList = const TypeChecker.fromRuntime(List);
 
-final isMap = new TypeChecker.fromRuntime(Map);
+const isMap = const TypeChecker.fromRuntime(Map);
 
-final isString = new TypeChecker.fromRuntime(String);
+const isString = const TypeChecker.fromRuntime(String);
 
-final isInt = new TypeChecker.fromRuntime(int);
+const isInt = const TypeChecker.fromRuntime(int);
 
-final isDouble = new TypeChecker.fromRuntime(double);
+const isDouble = const TypeChecker.fromRuntime(double);
 
-final isNum = new TypeChecker.fromRuntime(num);
+const isNum = const TypeChecker.fromRuntime(num);
 
-final isBool = new TypeChecker.fromRuntime(bool);
+const isBool = const TypeChecker.fromRuntime(bool);
+
+const isFieldProcessor = const TypeChecker.fromRuntime(FieldProcessor);
 
 bool isBuiltin(DartType type) {
   if (isString.isExactlyType(type)) return true;
@@ -37,4 +39,15 @@ bool isBuiltin(DartType type) {
   if (isBool.isExactlyType(type)) return true;
 
   return false;
+}
+
+class JaguarCliException implements Exception {
+  final message;
+
+  JaguarCliException([this.message]);
+
+  String toString() {
+    if (message == null) return "JaguarCliException";
+    return "JaguarCliException: $message";
+  }
 }

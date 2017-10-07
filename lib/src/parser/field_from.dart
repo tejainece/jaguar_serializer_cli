@@ -66,10 +66,10 @@ class SerializedPropertyFrom implements LeafPropertyFrom {
 PropertyFrom _parsePropertyFrom(
     SerializerInfo info, String fieldName, InterfaceType type) {
   if (type.isDynamic) {
-    throw new Exception(
+    throw new JaguarCliException(
         'Cannot serialize "dynamic" type for property $fieldName!');
   } else if (type.isObject) {
-    throw new Exception(
+    throw new JaguarCliException(
         'Cannot serialize "Object" type for property $fieldName!');
   }
 
@@ -97,7 +97,7 @@ PropertyFrom _parsePropertyFrom(
     });
 
     if (ser == null) {
-      throw new Exception(
+      throw new JaguarCliException(
           "Serializer not found for '${type.displayName} $fieldName'");
     }
 

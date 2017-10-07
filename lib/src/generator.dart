@@ -8,6 +8,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/constant/value.dart';
 
 import 'package:build/src/builder/build_step.dart';
+import 'package:logging/logging.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'package:jaguar_serializer/jaguar_serializer.dart';
@@ -68,8 +69,11 @@ start(List<String> args) {
   print(_usage);
 }
 
+final Logger _log = new Logger("SerializerGenerator");
+
 /// source_gen hook to generate serializer
 class SerializerGenerator extends Generator {
+
   const SerializerGenerator();
 
   final _onlyClassMsg =
@@ -92,19 +96,23 @@ class SerializerGenerator extends Generator {
       throw new StateError('Cannot have more than one matching annotation');
     }
 
-    if (el is! ClassElement) throw new Exception(_onlyClassMsg);
+    if (el is! ClassElement) throw new JaguarCliException(_onlyClassMsg);
 
     print("Generating serializer for ${el.name} ...");
 
-    final SerializerInfo info = _make(el, annots.first);
+    try {
+      final SerializerInfo info = _make(el, annots.first);
 
-    final writerInfo = new WriterInfo.fromInfo(info);
+      final writerInfo = new WriterInfo.fromInfo(info);
 
-    final writer = new Writer(writerInfo);
+      final writer = new Writer(writerInfo);
 
-    writer.generate();
-
-    return writer.toString();
+      writer.generate();
+      return writer.toString();
+    } on JaguarCliException catch (e) {
+      _log.severe(e.toString());
+      return "// $e";
+    }
   }
 
   SerializerInfo _make(ClassElement el, ElementAnnotation annot) {
