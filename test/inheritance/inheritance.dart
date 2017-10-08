@@ -5,7 +5,7 @@ import 'package:jaguar_serializer/jaguar_serializer.dart';
 part 'inheritance.g.dart';
 
 @GenSerializer(fields: const {
-  'foo': const EnDecode('a'),
+  'foo': const EnDecode(alias: 'a'),
 })
 class ModelSerializerRename extends Serializer<Model>
     with _$ModelSerializerRename {
