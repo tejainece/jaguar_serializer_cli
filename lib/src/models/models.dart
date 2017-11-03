@@ -134,7 +134,6 @@ class Instantiator {
     _makeModelType();
     _makeIncludeByDefault();
     _makeModelString();
-    _makeProcessors();
     _makeFields();
     _makeIgnore();
     _makeSerializers();
@@ -181,7 +180,12 @@ class Instantiator {
   void _makeFields() {
     final Map<DartObject, DartObject> map = obj.getField('fields').toMapValue();
     map.forEach((DartObject dKey, DartObject dV) {
-      _processField(dKey, dV);
+      if (isIgnore.isAssignableFromType(dV.type)) {
+        to[dKey.toStringValue()] = null;
+        from[dKey.toStringValue()] = null;
+      } else {
+        _processField(dKey, dV);
+      }
     });
   }
 
@@ -240,19 +244,6 @@ class Instantiator {
       }
       to[key] = null;
       from[key] = null;
-    });
-  }
-
-  @deprecated
-  void _makeProcessors() {
-    final Map<DartObject, DartObject> map =
-        obj.getField('processors').toMapValue();
-
-    map.forEach((DartObject k, DartObject v) {
-      final String key = k.toStringValue();
-      final value = new FieldProcessorInfo(v.type.displayName);
-
-      processors[key] = value;
     });
   }
 
