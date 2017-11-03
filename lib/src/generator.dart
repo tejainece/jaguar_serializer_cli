@@ -50,20 +50,31 @@ serializers:
 
 String get _usage => '''
 Available commands:
-  - build
-  - watch
-  - init
+  - build   -> Generates serializers
+  - watch   -> Generates serializers on file changes
+  - init    -> Intializes a project for usage with serializer
+  - version -> Prints version serializer CLI
+  - help    -> Prints this help text
 ''';
 
 // shoud we keep this ?
 start(List<String> args) {
   if (args.length > 0) {
     if (args[0] == 'watch') {
-      return watch();
+      watch();
+      return;
     } else if (args[0] == 'build') {
-      return build();
+      build();
+      return;
     } else if (args[0] == 'init') {
-      return init();
+      init();
+      return;
+    } else if (args[0] == 'version') {
+      print('0.5.1');
+      return;
+    } else if (args[0] == 'help') {
+      print(_usage);
+      return;
     }
   }
   print(_usage);

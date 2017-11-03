@@ -1,5 +1,9 @@
 # Changelog
 
-## 0.0.1
+## 0.5.1
 
-- Initial version, created by Stagehand
+- `version` and `help` commands for CLI
+
+## 0.5.0
+
+- Angular-like annotation to specify `GenSerializer`
