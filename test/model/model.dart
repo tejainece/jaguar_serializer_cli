@@ -23,3 +23,10 @@ class PlayerIgnoreCodec extends Serializer<Player> with _$PlayerIgnoreCodec {
   @override
   Player createModel() => new Player();
 }
+
+@GenSerializer(fields: const {'email': const Ignore()})
+class PlayerIgnoreFieldCodec extends Serializer<Player>
+    with _$PlayerIgnoreFieldCodec {
+  @override
+  Player createModel() => new Player();
+}

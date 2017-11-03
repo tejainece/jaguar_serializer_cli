@@ -79,3 +79,40 @@ abstract class _$PlayerIgnoreCodec implements Serializer<Player> {
 
   String modelString() => "Player";
 }
+
+// **************************************************************************
+// Generator: SerializerGenerator
+// Target: class PlayerIgnoreFieldCodec
+// **************************************************************************
+
+abstract class _$PlayerIgnoreFieldCodec implements Serializer<Player> {
+  Map toMap(Player model, {bool withType: false, String typeKey}) {
+    Map ret = new Map();
+    if (model != null) {
+      if (model.id != null) {
+        ret["id"] = model.id;
+      }
+      if (model.name != null) {
+        ret["name"] = model.name;
+      }
+      if (modelString() != null && withType) {
+        ret[typeKey ?? defaultTypeInfoKey] = modelString();
+      }
+    }
+    return ret;
+  }
+
+  Player fromMap(Map map, {Player model, String typeKey}) {
+    if (map is! Map) {
+      return null;
+    }
+    if (model is! Player) {
+      model = createModel();
+    }
+    model.id = map["id"];
+    model.name = map["name"];
+    return model;
+  }
+
+  String modelString() => "Player";
+}
