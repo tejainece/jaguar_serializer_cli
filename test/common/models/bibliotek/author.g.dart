@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of serializer.test.models.player;
+part of serializer.test.models.Author;
 
 // **************************************************************************
 // Generator: SerializerGenerator
 // **************************************************************************
 
-abstract class _$ModelSerializerRename implements Serializer<Model> {
-  Map toMap(Model model, {bool withType: false, String typeKey}) {
+abstract class _$AuthorSerializer implements Serializer<Author> {
+  Map toMap(Author model, {bool withType: false, String typeKey}) {
     Map ret = new Map();
     if (model != null) {
-      if (model.foo != null) {
-        ret["a"] = model.foo;
+      if (model.name != null) {
+        ret["name"] = model.name;
       }
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
@@ -20,16 +20,16 @@ abstract class _$ModelSerializerRename implements Serializer<Model> {
     return ret;
   }
 
-  Model fromMap(Map map, {Model model, String typeKey}) {
+  Author fromMap(Map map, {Author model, String typeKey}) {
     if (map is! Map) {
       return null;
     }
-    if (model is! Model) {
+    if (model is! Author) {
       model = createModel();
     }
-    model.foo = map["a"];
+    model.name = map["name"];
     return model;
   }
 
-  String modelString() => "Model";
+  String modelString() => "Author";
 }
