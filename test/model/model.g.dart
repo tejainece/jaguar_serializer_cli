@@ -4,7 +4,6 @@ part of models;
 
 // **************************************************************************
 // Generator: SerializerGenerator
-// Target: class PlayerCodec
 // **************************************************************************
 
 abstract class _$PlayerCodec implements Serializer<Player> {
@@ -42,11 +41,6 @@ abstract class _$PlayerCodec implements Serializer<Player> {
 
   String modelString() => "Player";
 }
-
-// **************************************************************************
-// Generator: SerializerGenerator
-// Target: class PlayerIgnoreCodec
-// **************************************************************************
 
 abstract class _$PlayerIgnoreCodec implements Serializer<Player> {
   Map toMap(Player model, {bool withType: false, String typeKey}) {
