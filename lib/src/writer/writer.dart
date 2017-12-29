@@ -1,6 +1,7 @@
 ///@nodoc
 library jaguar_serializer.generator.writer;
 
+import 'package:jaguar_serializer_cli/src/common/common.dart';
 import 'package:jaguar_serializer_cli/src/parser/parser.dart';
 
 part 'to_item.dart';
@@ -124,14 +125,18 @@ class Writer {
   void _toItemWriter(FieldTo item) {
     final String itemStr = 'model.${item.name}';
 
-    _w.writeln('if($itemStr != null) {');
+    if (!item.nullable) {
+      _w.writeln('if($itemStr != null) {');
+    }
 
     _w.write('ret["${item.key}"] = ');
     ToItemWriter writer = new ToItemWriter(item.property);
     _w.write(writer.generate('model.${item.name}'));
     _w.write(';');
 
-    _w.writeln('}');
+    if (!item.nullable) {
+      _w.writeln('}');
+    }
   }
 
   void _fromWriter() {
@@ -154,9 +159,19 @@ class Writer {
   }
 
   void _fromItemWriter(FieldFrom item) {
-    _w.write('model.${item.name} = ');
     FromItemWriter writer = new FromItemWriter(item.property);
-    _w.write(writer.generate('map["${item.key}"]'));
+
+    _w.write('model.${item.name} = ');
+    if (!item.nullable && item.defaultValue != null) {
+      _w.write(writer.generate('map["${item.key}"] ?? ${item.defaultValue}'));
+    } else if (!item.nullable &&
+        item.defaultValue == null &&
+        item.defaultValueFromConstructor) {
+      _w.write(writer.generate('map["${item.key}"]'));
+      _w.write(' ?? model.${item.name}');
+    } else {
+      _w.write(writer.generate('map["${item.key}"]'));
+    }
     _w.write(';');
   }
 }

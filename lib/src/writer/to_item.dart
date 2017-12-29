@@ -56,7 +56,7 @@ class ToItemWriter {
     } else if (prop is LeafPropertyTo) {
       return writeToLeafProperty(reference, prop);
     } else {
-      throw new Exception('Dont know how to handle this!');
+      throw new JaguarCliException('Dont know how to handle this!');
     }
   }
 

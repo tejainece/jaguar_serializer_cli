@@ -1,13 +1,15 @@
 part of jaguar_serializer.generator.parser.serializer;
 
 class FieldTo {
-  PropertyTo property;
+  final PropertyTo property;
 
-  String key;
+  final String key;
 
-  String name;
+  final String name;
 
-  FieldTo(this.key, this.name, this.property);
+  final bool nullable;
+
+  FieldTo(this.key, this.name, this.property, this.nullable);
 }
 
 abstract class PropertyTo {}
@@ -53,10 +55,10 @@ class SerializedPropertyTo implements LeafPropertyTo {
 PropertyTo _parsePropertyTo(
     SerializerInfo info, String fieldName, InterfaceType type) {
   if (type.isDynamic) {
-    throw new Exception(
+    throw new JaguarCliException(
         'Cannot serialize "dynamic" type for property $fieldName!');
   } else if (type.isObject) {
-    throw new Exception(
+    throw new JaguarCliException(
         'Cannot serialize "Object" type for property $fieldName!');
   }
 
@@ -84,8 +86,8 @@ PropertyTo _parsePropertyTo(
     });
 
     if (ser == null) {
-      throw new Exception(
-          "Serializer not found for '${type.displayName} $fieldName'");
+      throw new JaguarCliException(
+          "Serializer not found for '${type.displayName} $fieldName' in '${info.modelType}'");
     }
 
     return new SerializedPropertyTo(ser.displayName);
@@ -93,12 +95,16 @@ PropertyTo _parsePropertyTo(
 }
 
 FieldTo _parseFieldTo(SerializerInfo info, ModelField field, String key) {
+  bool nullable = info.globalNullableFields;
+  if (info.nullableFields.containsKey(field.name)) {
+    nullable = info.nullableFields[field.name];
+  }
   if (info.processors.containsKey(field.name)) {
     String instStr = info.processors[field.name].instantiationString;
-    return new FieldTo(
-        key, field.name, new CustomPropertyTo("${field.name}$instStr"));
+    return new FieldTo(key, field.name,
+        new CustomPropertyTo("${field.name}$instStr"), nullable);
   } else {
-    return new FieldTo(
-        key, field.name, _parsePropertyTo(info, field.name, field.type));
+    return new FieldTo(key, field.name,
+        _parsePropertyTo(info, field.name, field.type), nullable);
   }
 }

@@ -1,13 +1,20 @@
 part of jaguar_serializer.generator.parser.serializer;
 
 class FieldFrom {
-  PropertyFrom property;
+  final PropertyFrom property;
 
-  String key;
+  final String key;
 
-  String name;
+  final String name;
 
-  FieldFrom(this.key, this.name, this.property);
+  final String defaultValue;
+
+  final bool nullable;
+
+  final bool defaultValueFromConstructor;
+
+  FieldFrom(this.key, this.name, this.property, this.defaultValue,
+      this.defaultValueFromConstructor, this.nullable);
 }
 
 abstract class PropertyFrom {
@@ -66,10 +73,10 @@ class SerializedPropertyFrom implements LeafPropertyFrom {
 PropertyFrom _parsePropertyFrom(
     SerializerInfo info, String fieldName, InterfaceType type) {
   if (type.isDynamic) {
-    throw new Exception(
+    throw new JaguarCliException(
         'Cannot serialize "dynamic" type for property $fieldName!');
   } else if (type.isObject) {
-    throw new Exception(
+    throw new JaguarCliException(
         'Cannot serialize "Object" type for property $fieldName!');
   }
 
@@ -97,8 +104,8 @@ PropertyFrom _parsePropertyFrom(
     });
 
     if (ser == null) {
-      throw new Exception(
-          "Serializer not found for '${type.displayName} $fieldName'");
+      throw new JaguarCliException(
+          "Serializer not found for '${type.displayName} $fieldName'  in '${info.modelType}'");
     }
 
     return new SerializedPropertyFrom(ser.displayName);
@@ -106,12 +113,39 @@ PropertyFrom _parsePropertyFrom(
 }
 
 FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
+  String defaultValue;
+
+  if (info.defaultValues.containsKey(field.name)) {
+    defaultValue = info.defaultValues[field.name];
+  }
+
+  bool defaultValueFromConstructor = false;
+
+  if (info.defaultValuesFromConstructor.containsKey(field.name)) {
+    defaultValueFromConstructor = info.defaultValuesFromConstructor[field.name];
+  }
+
+  bool nullable = info.globalNullableFields;
+  if (info.nullableFields.containsKey(field.name)) {
+    nullable = info.nullableFields[field.name];
+  }
+
   if (info.processors.containsKey(field.name)) {
     String instStr = info.processors[field.name].instantiationString;
     return new FieldFrom(
-        key, field.name, new CustomPropertyFrom("${field.name}$instStr"));
+        key,
+        field.name,
+        new CustomPropertyFrom("${field.name}$instStr"),
+        defaultValue,
+        defaultValueFromConstructor,
+        nullable);
   } else {
     return new FieldFrom(
-        key, field.name, _parsePropertyFrom(info, field.name, field.type));
+        key,
+        field.name,
+        _parsePropertyFrom(info, field.name, field.type),
+        defaultValue,
+        defaultValueFromConstructor,
+        nullable);
   }
 }
