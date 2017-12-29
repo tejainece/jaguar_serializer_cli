@@ -15,11 +15,10 @@ environment:
   sdk: '>=1.20.1 <2.0.0'
 
 dependencies:
-  source_gen: ^0.6.1
-  build: ">=0.9.3 <0.10.0"
-  build_runner: ">=0.3.4 <0.4.0"
+  source_gen: ">=0.7.0 <0.8.0"
+  build_runner: ">=0.6.0 <0.8.0"
   jaguar_generator_config: '>=0.0.1 <0.1.0'
-  jaguar_serializer: ^0.5.1
+  jaguar_serializer: ">=0.5.0 <0.6.0"
 
 transformers:
 - test/pub_serve:

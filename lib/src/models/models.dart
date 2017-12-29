@@ -7,6 +7,7 @@ import 'package:analyzer/dart/element/type.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 
 import '../common/common.dart';
+import 'package:source_gen/source_gen.dart';
 
 class ModelField {
   /// Name of the field
@@ -91,7 +92,7 @@ class SerializerInfo {
 
 /// Instantiates [GenSerializer] from [DartObject]
 class Instantiator {
-  final DartObject obj;
+  final ConstantReader obj;
 
   final ClassElement element;
 
@@ -128,7 +129,7 @@ class Instantiator {
   Instantiator(this.element, this.obj);
 
   SerializerInfo instantiate() {
-    final bool nullable = obj.getField('nullableFields').toBoolValue();
+    final bool nullable = obj.peek('nullableFields')?.boolValue ?? false;
 
     _makeName();
     _makeModelType();
@@ -172,13 +173,13 @@ class Instantiator {
   }
 
   void _makeIncludeByDefault() =>
-      includeByDefault = obj.getField('includeByDefault').toBoolValue() ?? true;
+      includeByDefault = obj.peek('includeByDefault')?.boolValue ?? true;
 
   void _makeModelString() =>
-      modelString = obj.getField('modelName').toStringValue();
+      modelString = obj.peek('modelName')?.stringValue;
 
   void _makeFields() {
-    final Map<DartObject, DartObject> map = obj.getField('fields').toMapValue();
+    final Map<DartObject, DartObject> map = obj.peek('fields')?.mapValue ?? {};
     map.forEach((DartObject dKey, DartObject dV) {
       if (isIgnore.isAssignableFromType(dV.type)) {
         to[dKey.toStringValue()] = null;
@@ -237,7 +238,7 @@ class Instantiator {
   }
 
   void _makeIgnore() {
-    final List<DartObject> list = obj.getField('ignore').toListValue();
+    final List<DartObject> list = obj.peek('ignore')?.listValue ?? [];
     list.map((DartObject v) => v.toStringValue()).forEach((String key) {
       if (from.containsKey(key)) {
         throw new JaguarCliException('Both fields and ignore has $key!');
@@ -248,7 +249,7 @@ class Instantiator {
   }
 
   void _makeSerializers() {
-    final List<DartObject> list = obj.getField('serializers').toListValue();
+    final List<DartObject> list = obj.peek('serializers')?.listValue ?? [];
     list.map((DartObject obj) => obj.toTypeValue()).forEach((DartType t) {
       if (!isSerializer.isSuperTypeOf(t)) {
         throw new JaguarCliException(

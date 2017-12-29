@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.2
+
+- update `build`
+- remove deprecated `processors` field support
+
 ## 0.5.1
 
 - `version` and `help` commands for CLI

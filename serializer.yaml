@@ -1,3 +1,0 @@
-serializers:
-  - test/model/model.dart
-  - test/inheritance/inheritance.dart
