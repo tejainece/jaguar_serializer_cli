@@ -181,7 +181,12 @@ class Instantiator {
   void _makeFields() {
     final Map<DartObject, DartObject> map = obj.peek('fields')?.mapValue ?? {};
     map.forEach((DartObject dKey, DartObject dV) {
-      _processField(dKey, dV);
+      if (isIgnore.isAssignableFromType(dV.type)) {
+        to[dKey.toStringValue()] = null;
+        from[dKey.toStringValue()] = null;
+      } else {
+        _processField(dKey, dV);
+      }
     });
   }
 
