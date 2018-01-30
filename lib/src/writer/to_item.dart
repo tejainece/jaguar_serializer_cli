@@ -19,15 +19,13 @@ class ToItemWriter {
   String writeToMapProperty(String reference, MapPropertyTo map) {
     StringBuffer _w = new StringBuffer();
 
-    _w.write('new MapMaker');
-    _w.write('(');
+    _w.write('mapMaker<${map.keyTypeStr}, ${map.valueTypeStr}>(');
     _w.write(reference);
     _w.write(',');
     _w.write('(${map.keyTypeStr} key) => key,');
-    _w.write('(${map.valueTypeStr} value) {');
-    _w.write('return ');
+    _w.write('(${map.valueTypeStr} value) =>');
     _w.write(writeToProperty('value', map.value));
-    _w.write(';}).model');
+    _w.write(')');
 
     return _w.toString();
   }

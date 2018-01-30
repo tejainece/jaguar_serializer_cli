@@ -87,11 +87,11 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
             ?.toList();
       }
       if (model.map != null) {
-        ret["map"] =
-            new MapMaker(model.map, (String key) => key, (InnerModel2 value) {
-          return toInnerModel2Serializer.toMap(value,
-              withType: withType, typeKey: typeKey);
-        }).model;
+        ret["map"] = mapMaker<String, InnerModel2>(
+            model.map,
+            (String key) => key,
+            (InnerModel2 value) => toInnerModel2Serializer.toMap(value,
+                withType: withType, typeKey: typeKey));
       }
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
@@ -112,9 +112,12 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
         ?.map((Map val) =>
             fromInnerModel1Serializer.fromMap(val, typeKey: typeKey))
         ?.toList();
-    model.map = new MapMaker(map["map"], (String key) => key, (Map value) {
-      return fromInnerModel2Serializer.fromMap(value, typeKey: typeKey);
-    }).model as dynamic;
+    model.map = mapMaker<String, Map>(
+            map["map"],
+            (String key) => key,
+            (Map value) =>
+                fromInnerModel2Serializer.fromMap(value, typeKey: typeKey))
+        as dynamic;
     return model;
   }
 

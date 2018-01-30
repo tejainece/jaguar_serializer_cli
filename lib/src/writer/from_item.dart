@@ -18,15 +18,13 @@ class FromItemWriter {
 
   String writeFromMapProperty(String reference, MapPropertyFrom map) {
     StringBuffer _w = new StringBuffer();
-    _w.write('new MapMaker');
-    _w.write('(');
+   _w.write('mapMaker<${map.key.inputTypeStr}, ${map.value.inputTypeStr}>(');
     _w.write(reference);
     _w.write(',');
     _w.write('(${map.key.inputTypeStr} key) => key,');
-    _w.write('(${map.value.inputTypeStr} value) {');
-    _w.write('return ');
+    _w.write('(${map.value.inputTypeStr} value) =>');
     _w.write(writeFromProperty('value', map.value));
-    _w.write(';}).model as dynamic');
+    _w.write(') as dynamic');
 
     return _w.toString();
   }
