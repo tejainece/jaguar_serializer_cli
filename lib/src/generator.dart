@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
 
+import 'package:build/build.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:logging/logging.dart';
 import 'package:source_gen/source_gen.dart';
@@ -18,8 +19,8 @@ import 'package:jaguar_serializer_cli/src/writer/writer.dart';
 final Logger _log = new Logger("SerializerGenerator");
 
 /// source_gen hook to generate serializer
-class SerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
-  const SerializerGenerator();
+class JaguarSerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
+  const JaguarSerializerGenerator();
 
   final _onlyClassMsg =
       "GenSerializer annotation can only be defined on a class.";
@@ -48,4 +49,13 @@ class SerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
       return "// $e";
     }
   }
+}
+
+Builder jaguarSerializerPartBuilder(
+    {String header,
+    bool requireLibraryDirective: true}) {
+  requireLibraryDirective ??= true;
+  return new PartBuilder([
+    new JaguarSerializerGenerator()
+  ], header: header, requireLibraryDirective: requireLibraryDirective);
 }

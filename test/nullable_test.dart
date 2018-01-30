@@ -1,5 +1,4 @@
 import 'common/models/nullable/nullable.dart';
-import 'dart:convert';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 import 'package:test/test.dart';
 

@@ -3,7 +3,7 @@
 part of serializer.test.models.player;
 
 // **************************************************************************
-// Generator: SerializerGenerator
+// Generator: JaguarSerializerGenerator
 // **************************************************************************
 
 abstract class _$PlayerSerializer implements Serializer<Player> {
