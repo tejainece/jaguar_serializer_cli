@@ -8,11 +8,10 @@ part of serializer.test.models.player;
 
 abstract class _$InnerModel1Serializer implements Serializer<InnerModel1> {
   Map toMap(InnerModel1 model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.number != null) {
-        ret["number"] = model.number;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "number", model.number);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -36,11 +35,10 @@ abstract class _$InnerModel1Serializer implements Serializer<InnerModel1> {
 
 abstract class _$InnerModel2Serializer implements Serializer<InnerModel2> {
   Map toMap(InnerModel2 model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -63,36 +61,29 @@ abstract class _$InnerModel2Serializer implements Serializer<InnerModel2> {
 }
 
 abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
-  final InnerModel1Serializer toInnerModel1Serializer =
-      new InnerModel1Serializer();
-  final InnerModel2Serializer toInnerModel2Serializer =
-      new InnerModel2Serializer();
-  final InnerModel1Serializer fromInnerModel1Serializer =
-      new InnerModel1Serializer();
-  final InnerModel2Serializer fromInnerModel2Serializer =
-      new InnerModel2Serializer();
+  final _innerModel1Serializer = new InnerModel1Serializer();
+  final _innerModel2Serializer = new InnerModel2Serializer();
 
   Map toMap(OuterModel model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.id != null) {
-        ret["id"] = model.id;
-      }
-      if (model.list != null) {
-        ret["list"] = model.list
-            ?.map((InnerModel1 val) => val != null
-                ? toInnerModel1Serializer.toMap(val,
-                    withType: withType, typeKey: typeKey)
-                : null)
-            ?.toList();
-      }
-      if (model.map != null) {
-        ret["map"] = mapMaker<String, InnerModel2>(
-            model.map,
-            (String key) => key,
-            (InnerModel2 value) => toInnerModel2Serializer.toMap(value,
-                withType: withType, typeKey: typeKey));
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "id", model.id);
+      setNonNullableValue(
+          ret,
+          "list",
+          safeIterableMapper<InnerModel1>(
+              model.list,
+              (InnerModel1 val) => _innerModel1Serializer.toMap(val,
+                  withType: withType, typeKey: typeKey)));
+      setNonNullableValue(
+          ret,
+          "map",
+          mapMaker<String, InnerModel2>(
+              model.map,
+              (String key) => key,
+              (InnerModel2 value) => _innerModel2Serializer.toMap(value,
+                  withType: withType, typeKey: typeKey)));
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -108,16 +99,10 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
       model = createModel();
     }
     model.id = map["id"];
-    model.list = map["list"]
-        ?.map((Map val) =>
-            fromInnerModel1Serializer.fromMap(val, typeKey: typeKey))
-        ?.toList();
-    model.map = mapMaker<String, Map>(
-            map["map"],
-            (String key) => key,
-            (Map value) =>
-                fromInnerModel2Serializer.fromMap(value, typeKey: typeKey))
-        as dynamic;
+    model.list = safeIterableMapper<Map>(map["list"],
+        (Map val) => _innerModel1Serializer.fromMap(val, typeKey: typeKey));
+    model.map = mapMaker<String, Map>(map["map"], (String key) => key,
+        (Map value) => _innerModel2Serializer.fromMap(value, typeKey: typeKey));
     return model;
   }
 

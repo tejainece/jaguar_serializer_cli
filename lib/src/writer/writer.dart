@@ -11,9 +11,7 @@ part 'from_item.dart';
 class Writer {
   final WriterInfo info;
 
-  List<String> _providersTo = [];
-
-  List<String> _providersFrom = [];
+  List<String> _providers = [];
 
   List<String> _customsProcessors = [];
 
@@ -43,12 +41,12 @@ class Writer {
 
   void _serializedPropertyToWriter(PropertyTo to) {
     if (to is SerializedPropertyTo) {
-      if (_providersTo.contains(to.instantiationString)) {
+      final fieldName = "_${firstCharToLowerCase(to.instantiationString)}";
+      if (_providers.contains(fieldName)) {
         return;
       }
-      _providersTo.add(to.instantiationString);
-      _w.writeln(
-          'final ${to.instantiationString} to${to.instantiationString} = new ${to.instantiationString}();');
+      _providers.add(fieldName);
+      _w.writeln('final $fieldName = new ${to.instantiationString}();');
     } else if (to is ListPropertyTo) {
       _serializedPropertyToWriter(to.value);
     } else if (to is MapPropertyTo) {
@@ -59,12 +57,12 @@ class Writer {
 
   void _serializedPropertyFromWriter(PropertyFrom from) {
     if (from is SerializedPropertyFrom) {
-      if (_providersFrom.contains(from.instantiationString)) {
+      final fieldName = "_${firstCharToLowerCase(from.instantiationString)}";
+      if (_providers.contains(fieldName)) {
         return;
       }
-      _providersFrom.add(from.instantiationString);
-      _w.writeln('final ${from.instantiationString} from${from
-              .instantiationString} = new ${from.instantiationString}();');
+      _providers.add(fieldName);
+      _w.writeln('final $fieldName = new ${from.instantiationString}();');
     } else if (from is ListPropertyFrom) {
       _serializedPropertyFromWriter(from.value);
     } else if (from is MapPropertyFrom) {
@@ -75,12 +73,11 @@ class Writer {
 
   void _serializedPropertyCustomWriter(
       String key, FieldProcessorInfo customProcessor) {
-    if (!_customsProcessors
-        .contains("$key${customProcessor.instantiationString}")) {
-      _customsProcessors.add("$key${customProcessor.instantiationString}");
+    final fieldName = "_${firstCharToLowerCase(customProcessor.instantiationString)}";
+    if (!_customsProcessors.contains(fieldName)) {
+      _customsProcessors.add(fieldName);
       _w.writeln(
-          'final ${customProcessor.instantiationString} $key${customProcessor
-              .instantiationString} = const ${customProcessor.instantiationString}();');
+          'final $fieldName = const ${customProcessor.instantiationString}();');
     }
   }
 
@@ -98,18 +95,15 @@ class Writer {
   void _toWriter() {
     _w.writeln(
         'Map toMap($modelName model, {bool withType: false, String typeKey}) {');
-    _w.writeln(r'Map ret = new Map();');
+    _w.writeln(r'Map<String, dynamic> ret;');
 
     _w.writeln('if(model != null) {');
-
+    _w.writeln('ret = <String, dynamic>{};');
     for (FieldTo item in info.to) {
       _toItemWriter(item);
     }
-
     _typeKey();
-
     _w.writeln('}');
-
     _w.writeln(r'return ret;');
     _w.writeln(r'}');
   }
@@ -123,20 +117,15 @@ class Writer {
   }
 
   void _toItemWriter(FieldTo item) {
-    final String itemStr = 'model.${item.name}';
-
-    if (!item.nullable) {
-      _w.writeln('if($itemStr != null) {');
+    if (item.nullable == true) {
+      _w.writeln('setNullableValue(ret,');
+    } else {
+      _w.writeln('setNonNullableValue(ret,');
     }
-
-    _w.write('ret["${item.key}"] = ');
-    ToItemWriter writer = new ToItemWriter(item.property);
-    _w.write(writer.generate('model.${item.name}'));
-    _w.write(';');
-
-    if (!item.nullable) {
-      _w.writeln('}');
-    }
+    _w.writeln('"${item.key}",');
+    final writer = new ToItemWriter(item.property);
+    _w.writeln(writer.generate('model.${item.name}'));
+    _w.writeln(');');
   }
 
   void _fromWriter() {

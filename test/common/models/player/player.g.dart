@@ -8,23 +8,14 @@ part of serializer.test.models.player;
 
 abstract class _$PlayerSerializer implements Serializer<Player> {
   Map toMap(Player model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
-      if (model.email != null) {
-        ret["email"] = model.email;
-      }
-      if (model.age != null) {
-        ret["age"] = model.age;
-      }
-      if (model.score != null) {
-        ret["score"] = model.score;
-      }
-      if (model.emailConfirmed != null) {
-        ret["emailConfirmed"] = model.emailConfirmed;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
+      setNonNullableValue(ret, "email", model.email);
+      setNonNullableValue(ret, "age", model.age);
+      setNonNullableValue(ret, "score", model.score);
+      setNonNullableValue(ret, "emailConfirmed", model.emailConfirmed);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -52,20 +43,13 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
 
 abstract class _$PlayerSerializerIgnore implements Serializer<Player> {
   Map toMap(Player model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
-      if (model.email != null) {
-        ret["email"] = model.email;
-      }
-      if (model.age != null) {
-        ret["age"] = model.age;
-      }
-      if (model.score != null) {
-        ret["score"] = model.score;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
+      setNonNullableValue(ret, "email", model.email);
+      setNonNullableValue(ret, "age", model.age);
+      setNonNullableValue(ret, "score", model.score);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -92,14 +76,11 @@ abstract class _$PlayerSerializerIgnore implements Serializer<Player> {
 
 abstract class _$PlayerSerializerIgnores implements Serializer<Player> {
   Map toMap(Player model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
-      if (model.score != null) {
-        ret["score"] = model.score;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
+      setNonNullableValue(ret, "score", model.score);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -124,23 +105,14 @@ abstract class _$PlayerSerializerIgnores implements Serializer<Player> {
 
 abstract class _$PlayerSerializerRename implements Serializer<Player> {
   Map toMap(Player model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["N"] = model.name;
-      }
-      if (model.email != null) {
-        ret["email"] = model.email;
-      }
-      if (model.age != null) {
-        ret["age"] = model.age;
-      }
-      if (model.score != null) {
-        ret["S"] = model.score;
-      }
-      if (model.emailConfirmed != null) {
-        ret["eC"] = model.emailConfirmed;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "N", model.name);
+      setNonNullableValue(ret, "email", model.email);
+      setNonNullableValue(ret, "age", model.age);
+      setNonNullableValue(ret, "S", model.score);
+      setNonNullableValue(ret, "eC", model.emailConfirmed);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }

@@ -8,10 +8,10 @@ class ToItemWriter {
   String writeToListProperty(String reference, ListPropertyTo prop) {
     StringBuffer _w = new StringBuffer();
 
-    _w.write(reference);
-    _w.write('?.map((${prop.itemTypeStr} val) => val != null?');
+    _w.write("safeIterableMapper<${prop.itemTypeStr}>($reference, ");
+    _w.write('(${prop.itemTypeStr} val) => ');
     _w.write(writeToProperty('val', prop.value));
-    _w.write(':null)?.toList()');
+    _w.write(')');
 
     return _w.toString();
   }
@@ -36,10 +36,10 @@ class ToItemWriter {
     if (leaf is BuiltinLeafPropertyTo) {
       _w.write(reference);
     } else if (leaf is CustomPropertyTo) {
-      _w.write(leaf.instantiationString + '.serialize($reference)');
+      _w.write("_${firstCharToLowerCase(leaf.instantiationString)}" +
+          '.serialize($reference)');
     } else if (leaf is SerializedPropertyTo) {
-      _w.write(' to' +
-          leaf.instantiationString +
+      _w.write("_${firstCharToLowerCase(leaf.instantiationString)}" +
           '.toMap($reference, withType: withType, typeKey: typeKey)');
     }
 

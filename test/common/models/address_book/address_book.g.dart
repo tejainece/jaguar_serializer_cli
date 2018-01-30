@@ -7,19 +7,15 @@ part of test.common.models.address_book;
 // **************************************************************************
 
 abstract class _$Person implements Serializer<Person> {
-  final Address toAddress = new Address();
-  final Address fromAddress = new Address();
+  final _address = new Address();
 
   Map toMap(Person model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
-      if (model.address != null) {
-        ret["address"] = toAddress.toMap(model.address,
-            withType: withType, typeKey: typeKey);
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
+      setNonNullableValue(ret, "address",
+          _address.toMap(model.address, withType: withType, typeKey: typeKey));
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -35,7 +31,7 @@ abstract class _$Person implements Serializer<Person> {
       model = createModel();
     }
     model.name = map["name"];
-    model.address = fromAddress.fromMap(map["address"], typeKey: typeKey);
+    model.address = _address.fromMap(map["address"], typeKey: typeKey);
     return model;
   }
 
@@ -44,23 +40,14 @@ abstract class _$Person implements Serializer<Person> {
 
 abstract class _$Address implements Serializer<Address> {
   Map toMap(Address model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.street != null) {
-        ret["street"] = model.street;
-      }
-      if (model.houseNum != null) {
-        ret["houseNum"] = model.houseNum;
-      }
-      if (model.city != null) {
-        ret["city"] = model.city;
-      }
-      if (model.country != null) {
-        ret["country"] = model.country;
-      }
-      if (model.pincode != null) {
-        ret["pincode"] = model.pincode;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "street", model.street);
+      setNonNullableValue(ret, "houseNum", model.houseNum);
+      setNonNullableValue(ret, "city", model.city);
+      setNonNullableValue(ret, "country", model.country);
+      setNonNullableValue(ret, "pincode", model.pincode);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }

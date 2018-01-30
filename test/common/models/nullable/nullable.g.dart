@@ -8,12 +8,13 @@ part of serializer.test.nullable;
 
 abstract class _$NullableGlobal implements Serializer<NullableGlobal> {
   Map toMap(NullableGlobal model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      ret["foo"] = model.foo;
-      ret["bar"] = model.bar;
-      ret["list"] =
-          model.list?.map((String val) => val != null ? val : null)?.toList();
+      ret = <String, dynamic>{};
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "list",
+          safeIterableMapper<String>(model.list, (String val) => val));
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -30,7 +31,7 @@ abstract class _$NullableGlobal implements Serializer<NullableGlobal> {
     }
     model.foo = map["foo"];
     model.bar = map["bar"];
-    model.list = map["list"]?.map((String val) => val)?.toList();
+    model.list = safeIterableMapper<String>(map["list"], (String val) => val);
     return model;
   }
 
@@ -39,12 +40,11 @@ abstract class _$NullableGlobal implements Serializer<NullableGlobal> {
 
 abstract class _$NullableGlobal1 implements Serializer<NullableGlobal1> {
   Map toMap(NullableGlobal1 model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      ret["bar"] = model.bar;
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -69,14 +69,11 @@ abstract class _$NullableGlobal1 implements Serializer<NullableGlobal1> {
 
 abstract class _$NonNullableGlobal implements Serializer<NonNullableGlobal> {
   Map toMap(NonNullableGlobal model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -102,12 +99,11 @@ abstract class _$NonNullableGlobal implements Serializer<NonNullableGlobal> {
 
 abstract class _$NonNullableGlobal1 implements Serializer<NonNullableGlobal1> {
   Map toMap(NonNullableGlobal1 model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      ret["foo"] = model.foo;
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -132,16 +128,15 @@ abstract class _$NonNullableGlobal1 implements Serializer<NonNullableGlobal1> {
 }
 
 abstract class _$NonNullableComplex implements Serializer<NonNullableComplex> {
-  final TimeToStringProcessor fooTimeToStringProcessor =
-      const TimeToStringProcessor();
+  final _timeToStringProcessor = const TimeToStringProcessor();
 
   Map toMap(NonNullableComplex model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["f"] = fooTimeToStringProcessor.serialize(model.foo);
-      }
-      ret["bar"] = model.bar;
+      ret = <String, dynamic>{};
+      setNonNullableValue(
+          ret, "f", _timeToStringProcessor.serialize(model.foo));
+      setNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -157,7 +152,7 @@ abstract class _$NonNullableComplex implements Serializer<NonNullableComplex> {
     if (model is! NonNullableComplex) {
       model = createModel();
     }
-    model.foo = fooTimeToStringProcessor.deserialize(map["f"]) ?? model.foo;
+    model.foo = _timeToStringProcessor.deserialize(map["f"]) ?? model.foo;
     model.bar = map["bar"];
     return model;
   }
@@ -166,16 +161,14 @@ abstract class _$NonNullableComplex implements Serializer<NonNullableComplex> {
 }
 
 abstract class _$NullableComplex implements Serializer<NullableComplex> {
-  final TimeToStringProcessor fooTimeToStringProcessor =
-      const TimeToStringProcessor();
+  final _timeToStringProcessor = const TimeToStringProcessor();
 
   Map toMap(NullableComplex model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      ret["f"] = fooTimeToStringProcessor.serialize(model.foo);
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNullableValue(ret, "f", _timeToStringProcessor.serialize(model.foo));
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -190,7 +183,7 @@ abstract class _$NullableComplex implements Serializer<NullableComplex> {
     if (model is! NullableComplex) {
       model = createModel();
     }
-    model.foo = fooTimeToStringProcessor.deserialize(map["f"]);
+    model.foo = _timeToStringProcessor.deserialize(map["f"]);
     model.bar = map["bar"];
     return model;
   }
@@ -199,28 +192,22 @@ abstract class _$NullableComplex implements Serializer<NullableComplex> {
 }
 
 abstract class _$NullTestSerializer implements Serializer<NullTest> {
-  final ModelIntSerializer toModelIntSerializer = new ModelIntSerializer();
-  final ModelIntSerializer fromModelIntSerializer = new ModelIntSerializer();
+  final _modelIntSerializer = new ModelIntSerializer();
 
   Map toMap(NullTest model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.tests != null) {
-        ret["tests"] = model.tests
-            ?.map((String val) => val != null ? val : null)
-            ?.toList();
-      }
-      if (model.test != null) {
-        ret["test"] = model.test;
-      }
-      if (model.testModel != null) {
-        ret["testModel"] = model.testModel
-            ?.map((ModelInt val) => val != null
-                ? toModelIntSerializer.toMap(val,
-                    withType: withType, typeKey: typeKey)
-                : null)
-            ?.toList();
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "tests",
+          safeIterableMapper<String>(model.tests, (String val) => val));
+      setNonNullableValue(ret, "test", model.test);
+      setNonNullableValue(
+          ret,
+          "testModel",
+          safeIterableMapper<ModelInt>(
+              model.testModel,
+              (ModelInt val) => _modelIntSerializer.toMap(val,
+                  withType: withType, typeKey: typeKey)));
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -235,12 +222,10 @@ abstract class _$NullTestSerializer implements Serializer<NullTest> {
     if (model is! NullTest) {
       model = createModel();
     }
-    model.tests = map["tests"]?.map((String val) => val)?.toList();
+    model.tests = safeIterableMapper<String>(map["tests"], (String val) => val);
     model.test = map["test"];
-    model.testModel = map["testModel"]
-        ?.map(
-            (Map val) => fromModelIntSerializer.fromMap(val, typeKey: typeKey))
-        ?.toList();
+    model.testModel = safeIterableMapper<Map>(map["testModel"],
+        (Map val) => _modelIntSerializer.fromMap(val, typeKey: typeKey));
     return model;
   }
 

@@ -8,11 +8,10 @@ part of serializer.test.models.Author;
 
 abstract class _$AuthorSerializer implements Serializer<Author> {
   Map toMap(Author model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
