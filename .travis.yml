@@ -9,8 +9,6 @@ dart_task:
 - test: --platform vm
 - test: --platform chrome
 - test: --platform firefox
-- test: --platform dartium
-  install_dartium: true
 
 dart:
 #- stable
