@@ -38,32 +38,43 @@ void main() {
       expect(mapNoType["bools"], equals([true, false, true]));
       expect(mapNoType["ints"], equals([1, 2, 3]));
       expect(mapNoType["doubles"], equals([1.1, 2.2, 3.3]));
-      expect(mapNoType["ignores"], equals([
-        {"a": "1337A"},
-        {"a": "1337B"}
-      ]));
+      expect(
+          mapNoType["ignores"],
+          equals([
+            {"a": "1337A"},
+            {"a": "1337B"}
+          ]));
       expect(mapNoType["numSet"], equals({"numA": 1, "numB": 12.2}));
       expect(mapNoType["stringSet"], equals({"strA": "1", "strB": "3"}));
       expect(mapNoType["boolSet"], equals({"ok": true, "nok": false}));
       expect(mapNoType["intSet"], equals({"intA": 1, "intB": 12}));
       expect(mapNoType["doubleSet"], equals({"dblA": 1.1, "dblB": 12.1}));
-      expect(mapNoType["ignoreSet"], equals({
-        "A": {"a": "1337A"},
-        "B": {"a": "1337B"}
-      }));
-      expect(mapNoType["listInnerMap1"], equals({
-        "test": ["123456"]
-      }));
+      expect(
+          mapNoType["ignoreSet"],
+          equals({
+            "A": {"a": "1337A"},
+            "B": {"a": "1337B"}
+          }));
+      expect(
+          mapNoType["listInnerMap1"],
+          equals({
+            "test": ["123456"]
+          }));
 
-      final mapType = serializer.serialize(complex, withType: true, typeKey: "_type");
-      expect(mapType["ignores"], equals([
-        {"a": "1337A", "_type": "WithIgnore"},
-        {"a": "1337B", "_type": "WithIgnore"}
-      ]));
-      expect(mapType["ignoreSet"], equals({
-        "A": {"a": "1337A", "_type": "WithIgnore"},
-        "B": {"a": "1337B", "_type": "WithIgnore"}
-      }));
+      final mapType =
+          serializer.serialize(complex, withType: true, typeKey: "_type");
+      expect(
+          mapType["ignores"],
+          equals([
+            {"a": "1337A", "_type": "WithIgnore"},
+            {"a": "1337B", "_type": "WithIgnore"}
+          ]));
+      expect(
+          mapType["ignoreSet"],
+          equals({
+            "A": {"a": "1337A", "_type": "WithIgnore"},
+            "B": {"a": "1337B", "_type": "WithIgnore"}
+          }));
       expect(mapType["_type"], equals("Complex"));
     });
 

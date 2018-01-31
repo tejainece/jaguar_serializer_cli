@@ -11,8 +11,8 @@ dart_task:
   install_dartium: true
 
 dart:
-  - stable
-#  - dev
+#- stable
+  - dev
 
 cache:
   directories:

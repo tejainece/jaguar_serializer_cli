@@ -26,9 +26,8 @@ class JaguarSerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
       "GenSerializer annotation can only be defined on a class.";
 
   @override
-  FutureOr<String> generateForAnnotatedElement(Element element,
-      ConstantReader annotation, BuildStep buildStep) {
-
+  FutureOr<String> generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) {
     if (element is! ClassElement) throw new JaguarCliException(_onlyClassMsg);
 
     print("Generating serializer for ${element.name} ...");
@@ -52,10 +51,8 @@ class JaguarSerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
 }
 
 Builder jaguarSerializerPartBuilder(
-    {String header,
-    bool requireLibraryDirective: true}) {
+    {String header, bool requireLibraryDirective: true}) {
   requireLibraryDirective ??= true;
-  return new PartBuilder([
-    new JaguarSerializerGenerator()
-  ], header: header, requireLibraryDirective: requireLibraryDirective);
+  return new PartBuilder([new JaguarSerializerGenerator()],
+      header: header, requireLibraryDirective: requireLibraryDirective);
 }

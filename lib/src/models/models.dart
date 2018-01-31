@@ -175,8 +175,7 @@ class Instantiator {
   void _makeIncludeByDefault() =>
       includeByDefault = obj.peek('includeByDefault')?.boolValue ?? true;
 
-  void _makeModelString() =>
-      modelString = obj.peek('modelName')?.stringValue;
+  void _makeModelString() => modelString = obj.peek('modelName')?.stringValue;
 
   void _makeFields() {
     final Map<DartObject, DartObject> map = obj.peek('fields')?.mapValue ?? {};
