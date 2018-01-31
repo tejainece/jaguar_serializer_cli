@@ -11,6 +11,9 @@ environment:
   sdk: ">=2.0.0-dev <2.0.0"
 
 dependencies:
+  analyzer: ^0.30.0
+  build: ^0.11.0
+  logging: ^0.11.0
   source_gen: ">=0.7.0 <0.8.0"
   jaguar_generator_config: '>=0.0.1 <0.1.0'
   jaguar_serializer: ^1.0.0-dev1
