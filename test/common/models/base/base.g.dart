@@ -13,9 +13,7 @@ abstract class _$ExcludeByDefaultCodec implements Serializer<ExcludeByDefault> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "id", model.id);
       setNonNullableValue(ret, "name", model.name);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -42,9 +40,7 @@ abstract class _$ModelIntSerializer implements Serializer<ModelInt> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "bar", model.bar);
       setNonNullableValue(ret, "clazzA", model.clazzA);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -71,9 +67,7 @@ abstract class _$ModelDoubleSerializer implements Serializer<ModelDouble> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "bar", model.bar);
       setNonNullableValue(ret, "clazzA", model.clazzA);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -100,9 +94,7 @@ abstract class _$InheritanceSerializer implements Serializer<Inheritance> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "clazzA", model.clazzA);
       setNonNullableValue(ret, "clazzB", model.clazzB);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -132,9 +124,7 @@ abstract class _$DateSerializer implements Serializer<Date> {
       setNonNullableValue(
           ret, "date", _dateTimeProcessor.serialize(model.date));
       setNonNullableValue(ret, "clazzA", model.clazzA);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -160,9 +150,7 @@ abstract class _$WithIgnoreSerializer implements Serializer<WithIgnore> {
     if (model != null) {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "a", model.a);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -187,9 +175,7 @@ abstract class _$ModelRenamedSerializer implements Serializer<ModelRenamed> {
     if (model != null) {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "renamed", model.original);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -215,9 +201,7 @@ abstract class _$CustomModelNameSerializer
     if (model != null) {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

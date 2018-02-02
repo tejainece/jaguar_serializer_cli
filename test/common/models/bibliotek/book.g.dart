@@ -26,9 +26,7 @@ abstract class _$BookSerializer implements Serializer<Book> {
               model.authors,
               (Author val) => _authorSerializer.toMap(val,
                   withType: withType, typeKey: typeKey)));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

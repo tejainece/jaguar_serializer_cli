@@ -16,9 +16,7 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
       setNonNullableValue(ret, "age", model.age);
       setNonNullableValue(ret, "score", model.score);
       setNonNullableValue(ret, "emailConfirmed", model.emailConfirmed);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -50,9 +48,7 @@ abstract class _$PlayerSerializerIgnore implements Serializer<Player> {
       setNonNullableValue(ret, "email", model.email);
       setNonNullableValue(ret, "age", model.age);
       setNonNullableValue(ret, "score", model.score);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -81,9 +77,7 @@ abstract class _$PlayerSerializerIgnores implements Serializer<Player> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "name", model.name);
       setNonNullableValue(ret, "score", model.score);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -113,9 +107,7 @@ abstract class _$PlayerSerializerRename implements Serializer<Player> {
       setNonNullableValue(ret, "age", model.age);
       setNonNullableValue(ret, "S", model.score);
       setNonNullableValue(ret, "eC", model.emailConfirmed);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

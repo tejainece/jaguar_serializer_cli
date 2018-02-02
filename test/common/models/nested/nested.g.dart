@@ -12,9 +12,7 @@ abstract class _$InnerModel1Serializer implements Serializer<InnerModel1> {
     if (model != null) {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "number", model.number);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -39,9 +37,7 @@ abstract class _$InnerModel2Serializer implements Serializer<InnerModel2> {
     if (model != null) {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "name", model.name);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -84,9 +80,7 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
               (String key) => key,
               (InnerModel2 value) => _innerModel2Serializer.toMap(value,
                   withType: withType, typeKey: typeKey)));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

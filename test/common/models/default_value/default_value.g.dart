@@ -15,9 +15,7 @@ abstract class _$DefaultValue implements Serializer<DefaultValue> {
       setNonNullableValue(ret, "bar", model.bar);
       setNonNullableValue(ret, "list",
           safeIterableMapper<String>(model.list, (String val) => val));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -46,9 +44,7 @@ abstract class _$DefaultString implements Serializer<DefaultString> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -75,9 +71,7 @@ abstract class _$DefaultInt implements Serializer<DefaultInt> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -104,9 +98,7 @@ abstract class _$DefaultDouble implements Serializer<DefaultDouble> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -133,9 +125,7 @@ abstract class _$DefaultBool implements Serializer<DefaultBool> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -164,9 +154,7 @@ abstract class _$DefaultDate implements Serializer<DefaultDate> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "f", _dateTimeProcessor.serialize(model.foo));
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

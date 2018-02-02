@@ -16,9 +16,7 @@ abstract class _$Person implements Serializer<Person> {
       setNonNullableValue(ret, "name", model.name);
       setNonNullableValue(ret, "address",
           _address.toMap(model.address, withType: withType, typeKey: typeKey));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -48,9 +46,7 @@ abstract class _$Address implements Serializer<Address> {
       setNonNullableValue(ret, "city", model.city);
       setNonNullableValue(ret, "country", model.country);
       setNonNullableValue(ret, "pincode", model.pincode);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

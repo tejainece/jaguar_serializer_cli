@@ -102,18 +102,10 @@ class Writer {
     for (FieldTo item in info.to) {
       _toItemWriter(item);
     }
-    _typeKey();
+    _w.writeln('setTypeKeyValue(typeKey, modelString(), withType, ret);');
     _w.writeln('}');
     _w.writeln(r'return ret;');
     _w.writeln(r'}');
-  }
-
-  void _typeKey() {
-    _w.writeln('if(modelString() != null && withType) {');
-
-    _w.write('ret[typeKey ?? defaultTypeInfoKey] = modelString();');
-
-    _w.writeln('}');
   }
 
   void _toItemWriter(FieldTo item) {

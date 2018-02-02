@@ -15,9 +15,7 @@ abstract class _$NullableGlobal implements Serializer<NullableGlobal> {
       setNullableValue(ret, "bar", model.bar);
       setNullableValue(ret, "list",
           safeIterableMapper<String>(model.list, (String val) => val));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -45,9 +43,7 @@ abstract class _$NullableGlobal1 implements Serializer<NullableGlobal1> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
       setNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -74,9 +70,7 @@ abstract class _$NonNullableGlobal implements Serializer<NonNullableGlobal> {
       ret = <String, dynamic>{};
       setNonNullableValue(ret, "foo", model.foo);
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -104,9 +98,7 @@ abstract class _$NonNullableGlobal1 implements Serializer<NonNullableGlobal1> {
       ret = <String, dynamic>{};
       setNullableValue(ret, "foo", model.foo);
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -137,9 +129,7 @@ abstract class _$NonNullableComplex implements Serializer<NonNullableComplex> {
       setNonNullableValue(
           ret, "f", _timeToStringProcessor.serialize(model.foo));
       setNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -169,9 +159,7 @@ abstract class _$NullableComplex implements Serializer<NullableComplex> {
       ret = <String, dynamic>{};
       setNullableValue(ret, "f", _timeToStringProcessor.serialize(model.foo));
       setNonNullableValue(ret, "bar", model.bar);
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
@@ -208,9 +196,7 @@ abstract class _$NullTestSerializer implements Serializer<NullTest> {
               model.testModel,
               (ModelInt val) => _modelIntSerializer.toMap(val,
                   withType: withType, typeKey: typeKey)));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

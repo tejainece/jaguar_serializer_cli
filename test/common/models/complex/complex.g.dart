@@ -77,9 +77,7 @@ abstract class _$ComplexSerializer implements Serializer<Complex> {
           ret, "dynamicMap", _rawData.serialize(model.dynamicMap));
       setNonNullableValue(
           ret, "dynamicList", _rawData.serialize(model.dynamicList));
-      if (modelString() != null && withType) {
-        ret[typeKey ?? defaultTypeInfoKey] = modelString();
-      }
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }

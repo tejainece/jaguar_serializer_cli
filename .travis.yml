@@ -2,6 +2,10 @@ sudo: required
 addons:
   chrome: stable
 
+before_script:
+- pub get
+- pub run build_runner build
+
 language: dart
 dart_task:
 - dartfmt
