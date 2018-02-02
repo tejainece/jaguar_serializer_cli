@@ -8,25 +8,23 @@ class FromItemWriter {
   String writeFromListProperty(String reference, ListPropertyFrom prop) {
     StringBuffer _w = new StringBuffer();
 
-    _w.write(reference);
-    _w.write('?.map((${prop.value.inputTypeStr} val) => ');
+    _w.write("safeIterableMapper<${prop.value.inputTypeStr}>($reference, ");
+    _w.write('(${prop.value.inputTypeStr} val) => ');
     _w.write(writeFromProperty('val', prop.value));
-    _w.write(')?.toList()');
+    _w.write(')');
 
     return _w.toString();
   }
 
   String writeFromMapProperty(String reference, MapPropertyFrom map) {
     StringBuffer _w = new StringBuffer();
-    _w.write('new MapMaker');
-    _w.write('(');
+    _w.write('mapMaker<${map.key.inputTypeStr}, ${map.value.inputTypeStr}>(');
     _w.write(reference);
     _w.write(',');
     _w.write('(${map.key.inputTypeStr} key) => key,');
-    _w.write('(${map.value.inputTypeStr} value) {');
-    _w.write('return ');
+    _w.write('(${map.value.inputTypeStr} value) =>');
     _w.write(writeFromProperty('value', map.value));
-    _w.write(';}).model as dynamic');
+    _w.write(')');
 
     return _w.toString();
   }
@@ -37,10 +35,9 @@ class FromItemWriter {
     if (leaf is BuiltinLeafPropertyFrom) {
       _w.write(reference);
     } else if (leaf is CustomPropertyFrom) {
-      _w.write(leaf.instantiationString + '.deserialize($reference)');
+      _w.write("_${firstCharToLowerCase(leaf.instantiationString)}" + '.deserialize($reference)');
     } else if (leaf is SerializedPropertyFrom) {
-      _w.write('from' +
-          leaf.instantiationString +
+      _w.write("_${firstCharToLowerCase(leaf.instantiationString)}" +
           '.fromMap($reference, typeKey: typeKey)');
     }
     return _w.toString();

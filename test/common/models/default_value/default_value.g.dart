@@ -8,18 +8,13 @@ part of serializer.test.default_value;
 
 abstract class _$DefaultValue implements Serializer<DefaultValue> {
   Map toMap(DefaultValue model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
-      if (model.list != null) {
-        ret["list"] =
-            model.list?.map((String val) => val != null ? val : null)?.toList();
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
+      setNonNullableValue(ret, "list",
+          safeIterableMapper<String>(model.list, (String val) => val));
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -36,7 +31,8 @@ abstract class _$DefaultValue implements Serializer<DefaultValue> {
     }
     model.foo = map["foo"] ?? model.foo;
     model.bar = map["bar"];
-    model.list = map["list"]?.map((String val) => val)?.toList() ?? model.list;
+    model.list = safeIterableMapper<String>(map["list"], (String val) => val) ??
+        model.list;
     return model;
   }
 
@@ -45,14 +41,11 @@ abstract class _$DefaultValue implements Serializer<DefaultValue> {
 
 abstract class _$DefaultString implements Serializer<DefaultString> {
   Map toMap(DefaultString model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -77,14 +70,11 @@ abstract class _$DefaultString implements Serializer<DefaultString> {
 
 abstract class _$DefaultInt implements Serializer<DefaultInt> {
   Map toMap(DefaultInt model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -109,14 +99,11 @@ abstract class _$DefaultInt implements Serializer<DefaultInt> {
 
 abstract class _$DefaultDouble implements Serializer<DefaultDouble> {
   Map toMap(DefaultDouble model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -141,14 +128,11 @@ abstract class _$DefaultDouble implements Serializer<DefaultDouble> {
 
 abstract class _$DefaultBool implements Serializer<DefaultBool> {
   Map toMap(DefaultBool model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["foo"] = model.foo;
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -172,17 +156,14 @@ abstract class _$DefaultBool implements Serializer<DefaultBool> {
 }
 
 abstract class _$DefaultDate implements Serializer<DefaultDate> {
-  final DateTimeProcessor fooDateTimeProcessor = const DateTimeProcessor();
+  final _dateTimeProcessor = const DateTimeProcessor();
 
   Map toMap(DefaultDate model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.foo != null) {
-        ret["f"] = fooDateTimeProcessor.serialize(model.foo);
-      }
-      if (model.bar != null) {
-        ret["bar"] = model.bar;
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "f", _dateTimeProcessor.serialize(model.foo));
+      setNonNullableValue(ret, "bar", model.bar);
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -198,7 +179,7 @@ abstract class _$DefaultDate implements Serializer<DefaultDate> {
       model = createModel();
     }
     model.foo =
-        fooDateTimeProcessor.deserialize(map["f"] ?? "1994-03-29T06:00:00Z");
+        _dateTimeProcessor.deserialize(map["f"] ?? "1994-03-29T06:00:00Z");
     model.bar = map["bar"];
     return model;
   }

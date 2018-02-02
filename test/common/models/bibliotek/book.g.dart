@@ -7,33 +7,25 @@ part of serializer.test.models.book;
 // **************************************************************************
 
 abstract class _$BookSerializer implements Serializer<Book> {
-  final MapKeyNumToStringProcessor publishedDatesMapKeyNumToStringProcessor =
-      const MapKeyNumToStringProcessor();
-  final AuthorSerializer toAuthorSerializer = new AuthorSerializer();
-  final AuthorSerializer fromAuthorSerializer = new AuthorSerializer();
+  final _mapKeyNumToStringProcessor = const MapKeyNumToStringProcessor();
+  final _authorSerializer = new AuthorSerializer();
 
   Map toMap(Book model, {bool withType: false, String typeKey}) {
-    Map ret = new Map();
+    Map<String, dynamic> ret;
     if (model != null) {
-      if (model.name != null) {
-        ret["name"] = model.name;
-      }
-      if (model.tags != null) {
-        ret["tags"] =
-            model.tags?.map((String val) => val != null ? val : null)?.toList();
-      }
-      if (model.publishedDates != null) {
-        ret["publishedDates"] = publishedDatesMapKeyNumToStringProcessor
-            .serialize(model.publishedDates);
-      }
-      if (model.authors != null) {
-        ret["authors"] = model.authors
-            ?.map((Author val) => val != null
-                ? toAuthorSerializer.toMap(val,
-                    withType: withType, typeKey: typeKey)
-                : null)
-            ?.toList();
-      }
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "name", model.name);
+      setNonNullableValue(ret, "tags",
+          safeIterableMapper<String>(model.tags, (String val) => val));
+      setNonNullableValue(ret, "publishedDates",
+          _mapKeyNumToStringProcessor.serialize(model.publishedDates));
+      setNonNullableValue(
+          ret,
+          "authors",
+          safeIterableMapper<Author>(
+              model.authors,
+              (Author val) => _authorSerializer.toMap(val,
+                  withType: withType, typeKey: typeKey)));
       if (modelString() != null && withType) {
         ret[typeKey ?? defaultTypeInfoKey] = modelString();
       }
@@ -49,12 +41,11 @@ abstract class _$BookSerializer implements Serializer<Book> {
       model = createModel();
     }
     model.name = map["name"];
-    model.tags = map["tags"]?.map((String val) => val)?.toList();
-    model.publishedDates = publishedDatesMapKeyNumToStringProcessor
-        .deserialize(map["publishedDates"]);
-    model.authors = map["authors"]
-        ?.map((Map val) => fromAuthorSerializer.fromMap(val, typeKey: typeKey))
-        ?.toList();
+    model.tags = safeIterableMapper<String>(map["tags"], (String val) => val);
+    model.publishedDates =
+        _mapKeyNumToStringProcessor.deserialize(map["publishedDates"]);
+    model.authors = safeIterableMapper<Map>(map["authors"],
+        (Map val) => _authorSerializer.fromMap(val, typeKey: typeKey));
     return model;
   }
 

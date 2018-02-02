@@ -53,3 +53,6 @@ class JaguarCliException implements Exception {
     return "JaguarCliException: $message";
   }
 }
+
+String firstCharToLowerCase(String str) =>
+    str[0].toLowerCase() + str.substring(1);

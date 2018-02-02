@@ -135,7 +135,7 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
     return new FieldFrom(
         key,
         field.name,
-        new CustomPropertyFrom("${field.name}$instStr"),
+        new CustomPropertyFrom(instStr),
         defaultValue,
         defaultValueFromConstructor,
         nullable);
