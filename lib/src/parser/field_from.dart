@@ -132,13 +132,8 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
 
   if (info.processors.containsKey(field.name)) {
     String instStr = info.processors[field.name].instantiationString;
-    return new FieldFrom(
-        key,
-        field.name,
-        new CustomPropertyFrom(instStr),
-        defaultValue,
-        defaultValueFromConstructor,
-        nullable);
+    return new FieldFrom(key, field.name, new CustomPropertyFrom(instStr),
+        defaultValue, defaultValueFromConstructor, nullable);
   } else {
     return new FieldFrom(
         key,

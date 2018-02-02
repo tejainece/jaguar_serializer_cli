@@ -73,7 +73,8 @@ class Writer {
 
   void _serializedPropertyCustomWriter(
       String key, FieldProcessorInfo customProcessor) {
-    final fieldName = "_${firstCharToLowerCase(customProcessor.instantiationString)}";
+    final fieldName =
+        "_${firstCharToLowerCase(customProcessor.instantiationString)}";
     if (!_customsProcessors.contains(fieldName)) {
       _customsProcessors.add(fieldName);
       _w.writeln(

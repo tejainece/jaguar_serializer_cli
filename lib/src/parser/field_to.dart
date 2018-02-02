@@ -101,8 +101,8 @@ FieldTo _parseFieldTo(SerializerInfo info, ModelField field, String key) {
   }
   if (info.processors.containsKey(field.name)) {
     String instStr = info.processors[field.name].instantiationString;
-    return new FieldTo(key, field.name,
-        new CustomPropertyTo(instStr), nullable);
+    return new FieldTo(
+        key, field.name, new CustomPropertyTo(instStr), nullable);
   } else {
     return new FieldTo(key, field.name,
         _parsePropertyTo(info, field.name, field.type), nullable);
