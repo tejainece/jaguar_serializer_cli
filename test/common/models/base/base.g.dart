@@ -11,8 +11,8 @@ abstract class _$ExcludeByDefaultCodec implements Serializer<ExcludeByDefault> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "id", model.id);
-      setNonNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "id", model.id);
+      setNullableValue(ret, "name", model.name);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -38,8 +38,8 @@ abstract class _$ModelIntSerializer implements Serializer<ModelInt> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "bar", model.bar);
-      setNonNullableValue(ret, "clazzA", model.clazzA);
+      setNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "clazzA", model.clazzA);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -65,8 +65,8 @@ abstract class _$ModelDoubleSerializer implements Serializer<ModelDouble> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "bar", model.bar);
-      setNonNullableValue(ret, "clazzA", model.clazzA);
+      setNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "clazzA", model.clazzA);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -92,8 +92,8 @@ abstract class _$InheritanceSerializer implements Serializer<Inheritance> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "clazzA", model.clazzA);
-      setNonNullableValue(ret, "clazzB", model.clazzB);
+      setNullableValue(ret, "clazzA", model.clazzA);
+      setNullableValue(ret, "clazzB", model.clazzB);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -121,9 +121,8 @@ abstract class _$DateSerializer implements Serializer<Date> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(
-          ret, "date", _dateTimeProcessor.serialize(model.date));
-      setNonNullableValue(ret, "clazzA", model.clazzA);
+      setNullableValue(ret, "date", _dateTimeProcessor.serialize(model.date));
+      setNullableValue(ret, "clazzA", model.clazzA);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -149,7 +148,7 @@ abstract class _$WithIgnoreSerializer implements Serializer<WithIgnore> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "a", model.a);
+      setNullableValue(ret, "a", model.a);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -174,7 +173,7 @@ abstract class _$ModelRenamedSerializer implements Serializer<ModelRenamed> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "renamed", model.original);
+      setNullableValue(ret, "renamed", model.original);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -200,7 +199,7 @@ abstract class _$CustomModelNameSerializer
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "foo", model.foo);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;

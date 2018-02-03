@@ -6,214 +6,149 @@ part of serializer.test.nullable;
 // Generator: JaguarSerializerGenerator
 // **************************************************************************
 
-abstract class _$NullableGlobal implements Serializer<NullableGlobal> {
-  Map toMap(NullableGlobal model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNullableValue(ret, "foo", model.foo);
-      setNullableValue(ret, "bar", model.bar);
-      setNullableValue(ret, "list",
-          safeIterableMapper<String>(model.list, (String val) => val));
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  NullableGlobal fromMap(Map map, {NullableGlobal model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! NullableGlobal) {
-      model = createModel();
-    }
-    model.foo = map["foo"];
-    model.bar = map["bar"];
-    model.list = safeIterableMapper<String>(map["list"], (String val) => val);
-    return model;
-  }
-
-  String modelString() => "NullableGlobal";
-}
-
-abstract class _$NullableGlobal1 implements Serializer<NullableGlobal1> {
-  Map toMap(NullableGlobal1 model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNullableValue(ret, "bar", model.bar);
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  NullableGlobal1 fromMap(Map map, {NullableGlobal1 model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! NullableGlobal1) {
-      model = createModel();
-    }
-    model.foo = map["foo"] ?? model.foo;
-    model.bar = map["bar"];
-    return model;
-  }
-
-  String modelString() => "NullableGlobal1";
-}
-
-abstract class _$NonNullableGlobal implements Serializer<NonNullableGlobal> {
-  Map toMap(NonNullableGlobal model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  NonNullableGlobal fromMap(Map map,
-      {NonNullableGlobal model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! NonNullableGlobal) {
-      model = createModel();
-    }
-    model.foo = map["foo"] ?? model.foo;
-    model.bar = map["bar"] ?? model.bar;
-    return model;
-  }
-
-  String modelString() => "NonNullableGlobal";
-}
-
-abstract class _$NonNullableGlobal1 implements Serializer<NonNullableGlobal1> {
-  Map toMap(NonNullableGlobal1 model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  NonNullableGlobal1 fromMap(Map map,
-      {NonNullableGlobal1 model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! NonNullableGlobal1) {
-      model = createModel();
-    }
-    model.foo = map["foo"];
-    model.bar = map["bar"] ?? model.bar;
-    return model;
-  }
-
-  String modelString() => "NonNullableGlobal1";
-}
-
-abstract class _$NonNullableComplex implements Serializer<NonNullableComplex> {
-  final _timeToStringProcessor = const TimeToStringProcessor();
-
-  Map toMap(NonNullableComplex model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNonNullableValue(
-          ret, "f", _timeToStringProcessor.serialize(model.foo));
-      setNullableValue(ret, "bar", model.bar);
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  NonNullableComplex fromMap(Map map,
-      {NonNullableComplex model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! NonNullableComplex) {
-      model = createModel();
-    }
-    model.foo = _timeToStringProcessor.deserialize(map["f"]) ?? model.foo;
-    model.bar = map["bar"];
-    return model;
-  }
-
-  String modelString() => "NonNullableComplex";
-}
-
-abstract class _$NullableComplex implements Serializer<NullableComplex> {
-  final _timeToStringProcessor = const TimeToStringProcessor();
-
-  Map toMap(NullableComplex model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNullableValue(ret, "f", _timeToStringProcessor.serialize(model.foo));
-      setNonNullableValue(ret, "bar", model.bar);
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  NullableComplex fromMap(Map map, {NullableComplex model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! NullableComplex) {
-      model = createModel();
-    }
-    model.foo = _timeToStringProcessor.deserialize(map["f"]);
-    model.bar = map["bar"];
-    return model;
-  }
-
-  String modelString() => "NullableComplex";
-}
-
-abstract class _$NullTestSerializer implements Serializer<NullTest> {
+abstract class _$NullableSerializer implements Serializer<Model> {
+  final _dateTimeProcessor = const DateTimeProcessor();
   final _modelIntSerializer = new ModelIntSerializer();
 
-  Map toMap(NullTest model, {bool withType: false, String typeKey}) {
+  Map toMap(Model model, {bool withType: false, String typeKey}) {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "tests",
-          safeIterableMapper<String>(model.tests, (String val) => val));
-      setNonNullableValue(ret, "test", model.test);
-      setNonNullableValue(
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(
           ret,
-          "testModel",
-          safeIterableMapper<ModelInt>(
-              model.testModel,
+          "modelInt",
+          _modelIntSerializer.toMap(model.modelInt,
+              withType: withType, typeKey: typeKey));
+      setNullableValue(ret, "date", _dateTimeProcessor.serialize(model.date));
+      setNullableValue(
+          ret,
+          "listModelInt",
+          nullableIterableMapper<ModelInt>(
+              model.listModelInt,
               (ModelInt val) => _modelIntSerializer.toMap(val,
                   withType: withType, typeKey: typeKey)));
+      setNullableValue(
+          ret,
+          "mapModelInt",
+          nullableMapMaker<ModelInt>(
+              model.mapModelInt,
+              (ModelInt value) => _modelIntSerializer.toMap(value,
+                  withType: withType, typeKey: typeKey)));
+      setNullableValue(
+          ret,
+          "listDates",
+          nullableIterableMapper<DateTime>(model.listDates,
+              (DateTime val) => _dateTimeProcessor.serialize(val)));
+      setNullableValue(
+          ret,
+          "mapDates",
+          nullableMapMaker<DateTime>(model.mapDates,
+              (DateTime value) => _dateTimeProcessor.serialize(value)));
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
   }
 
-  NullTest fromMap(Map map, {NullTest model, String typeKey}) {
+  Model fromMap(Map map, {Model model, String typeKey}) {
     if (map is! Map) {
       return null;
     }
-    if (model is! NullTest) {
+    if (model is! Model) {
       model = createModel();
     }
-    model.tests = safeIterableMapper<String>(map["tests"], (String val) => val);
-    model.test = map["test"];
-    model.testModel = safeIterableMapper<Map>(map["testModel"],
+    model.foo = map["foo"];
+    model.modelInt =
+        _modelIntSerializer.fromMap(map["modelInt"], typeKey: typeKey);
+    model.date = _dateTimeProcessor.deserialize(map["date"]);
+    model.listModelInt = nullableIterableMapper<Map>(map["listModelInt"],
         (Map val) => _modelIntSerializer.fromMap(val, typeKey: typeKey));
+    model.mapModelInt = nullableMapMaker<Map>(map["mapModelInt"],
+        (Map value) => _modelIntSerializer.fromMap(value, typeKey: typeKey));
+    model.listDates = nullableIterableMapper<dynamic>(
+        map["listDates"], (dynamic val) => _dateTimeProcessor.deserialize(val));
+    model.mapDates = nullableMapMaker<dynamic>(map["mapDates"],
+        (dynamic value) => _dateTimeProcessor.deserialize(value));
     return model;
   }
 
-  String modelString() => "NullTest";
+  String modelString() => "Model";
+}
+
+abstract class _$NonNullableSerializer implements Serializer<Model> {
+  final _dateTimeProcessor = const DateTimeProcessor();
+  final _modelIntSerializer = new ModelIntSerializer();
+
+  Map toMap(Model model, {bool withType: false, String typeKey}) {
+    Map<String, dynamic> ret;
+    if (model != null) {
+      ret = <String, dynamic>{};
+      setNonNullableValue(ret, "foo", model.foo);
+      setNonNullableValue(
+          ret,
+          "modelInt",
+          _modelIntSerializer.toMap(model.modelInt,
+              withType: withType, typeKey: typeKey));
+      setNonNullableValue(
+          ret, "date", _dateTimeProcessor.serialize(model.date));
+      setNonNullableValue(
+          ret,
+          "listModelInt",
+          nonNullableIterableMapper<ModelInt>(
+              model.listModelInt,
+              (ModelInt val) => _modelIntSerializer.toMap(val,
+                  withType: withType, typeKey: typeKey),
+              []));
+      setNonNullableValue(
+          ret,
+          "mapModelInt",
+          nonNullableMapMaker<ModelInt>(
+              model.mapModelInt,
+              (ModelInt value) => _modelIntSerializer.toMap(value,
+                  withType: withType, typeKey: typeKey),
+              <String, dynamic>{}));
+      setNonNullableValue(
+          ret,
+          "listDates",
+          nonNullableIterableMapper<DateTime>(model.listDates,
+              (DateTime val) => _dateTimeProcessor.serialize(val), []));
+      setNonNullableValue(
+          ret,
+          "mapDates",
+          nonNullableMapMaker<DateTime>(
+              model.mapDates,
+              (DateTime value) => _dateTimeProcessor.serialize(value),
+              <String, dynamic>{}));
+      setTypeKeyValue(typeKey, modelString(), withType, ret);
+    }
+    return ret;
+  }
+
+  Model fromMap(Map map, {Model model, String typeKey}) {
+    if (map is! Map) {
+      return null;
+    }
+    if (model is! Model) {
+      model = createModel();
+    }
+    model.foo = map["foo"];
+    model.modelInt =
+        _modelIntSerializer.fromMap(map["modelInt"], typeKey: typeKey);
+    model.date = _dateTimeProcessor.deserialize(map["date"]);
+    model.listModelInt = nonNullableIterableMapper<Map>(map["listModelInt"],
+        (Map val) => _modelIntSerializer.fromMap(val, typeKey: typeKey), []);
+    model.mapModelInt = nonNullableMapMaker<Map>(
+        map["mapModelInt"],
+        (Map value) => _modelIntSerializer.fromMap(value, typeKey: typeKey),
+        <String, dynamic>{});
+    model.listDates = nonNullableIterableMapper<dynamic>(map["listDates"],
+        (dynamic val) => _dateTimeProcessor.deserialize(val), []);
+    model.mapDates = nonNullableMapMaker<dynamic>(
+        map["mapDates"],
+        (dynamic value) => _dateTimeProcessor.deserialize(value),
+        <String, dynamic>{});
+    return model;
+  }
+
+  String modelString() => "Model";
 }

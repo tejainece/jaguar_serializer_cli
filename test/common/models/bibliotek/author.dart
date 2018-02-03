@@ -1,10 +1,10 @@
 library serializer.test.models.Author;
 
 import 'package:jaguar_serializer/jaguar_serializer.dart';
-
+import '../address_book/address_book.dart';
 part 'author.g.dart';
 
-@GenSerializer()
+@GenSerializer(serializers: const [])
 class AuthorSerializer extends Serializer<Author> with _$AuthorSerializer {
   Author createModel() => new Author();
 

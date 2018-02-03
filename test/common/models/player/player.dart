@@ -4,7 +4,8 @@ import 'package:jaguar_serializer/jaguar_serializer.dart';
 
 part 'player.g.dart';
 
-@GenSerializer()
+@GenSerializer(
+    fields: const {'emailConfirmed': const Property(isNullable: false)})
 class PlayerSerializer extends Serializer<Player> with _$PlayerSerializer {
   Player createModel() => new Player();
 

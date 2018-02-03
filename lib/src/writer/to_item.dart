@@ -1,16 +1,23 @@
 part of jaguar_serializer.generator.writer;
 
 class ToItemWriter {
-  PropertyTo _property;
+  final FieldTo field;
 
-  ToItemWriter(this._property);
+  ToItemWriter(this.field);
 
   String writeToListProperty(String reference, ListPropertyTo prop) {
     StringBuffer _w = new StringBuffer();
 
-    _w.write("safeIterableMapper<${prop.itemTypeStr}>($reference, ");
+    if (field.nullable) {
+      _w.write("nullableIterableMapper<${prop.itemTypeStr}>($reference, ");
+    } else {
+      _w.write("nonNullableIterableMapper<${prop.itemTypeStr}>($reference, ");
+    }
     _w.write('(${prop.itemTypeStr} val) => ');
     _w.write(writeToProperty('val', prop.value));
+    if (!field.nullable) {
+      _w.write(", []");
+    }
     _w.write(')');
 
     return _w.toString();
@@ -19,12 +26,18 @@ class ToItemWriter {
   String writeToMapProperty(String reference, MapPropertyTo map) {
     StringBuffer _w = new StringBuffer();
 
-    _w.write('mapMaker<${map.keyTypeStr}, ${map.valueTypeStr}>(');
+    if (field.nullable) {
+      _w.write('nullableMapMaker<${map.valueTypeStr}>(');
+    } else {
+      _w.write('nonNullableMapMaker<${map.valueTypeStr}>(');
+    }
     _w.write(reference);
     _w.write(',');
-    _w.write('(${map.keyTypeStr} key) => key,');
     _w.write('(${map.valueTypeStr} value) =>');
     _w.write(writeToProperty('value', map.value));
+    if (!field.nullable) {
+      _w.write(", <String, dynamic>{}");
+    }
     _w.write(')');
 
     return _w.toString();
@@ -32,7 +45,6 @@ class ToItemWriter {
 
   String writeToLeafProperty(String reference, LeafPropertyTo leaf) {
     StringBuffer _w = new StringBuffer();
-
     if (leaf is BuiltinLeafPropertyTo) {
       _w.write(reference);
     } else if (leaf is CustomPropertyTo) {
@@ -59,6 +71,6 @@ class ToItemWriter {
   }
 
   String generate(String reference) {
-    return writeToProperty(reference, _property);
+    return writeToProperty(reference, field.property);
   }
 }

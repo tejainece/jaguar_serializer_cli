@@ -11,7 +11,7 @@ abstract class _$InnerModel1Serializer implements Serializer<InnerModel1> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "number", model.number);
+      setNullableValue(ret, "number", model.number);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -36,7 +36,7 @@ abstract class _$InnerModel2Serializer implements Serializer<InnerModel2> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "name", model.name);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -64,20 +64,19 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "id", model.id);
-      setNonNullableValue(
+      setNullableValue(ret, "id", model.id);
+      setNullableValue(
           ret,
           "list",
-          safeIterableMapper<InnerModel1>(
+          nullableIterableMapper<InnerModel1>(
               model.list,
               (InnerModel1 val) => _innerModel1Serializer.toMap(val,
                   withType: withType, typeKey: typeKey)));
-      setNonNullableValue(
+      setNullableValue(
           ret,
           "map",
-          mapMaker<String, InnerModel2>(
+          nullableMapMaker<InnerModel2>(
               model.map,
-              (String key) => key,
               (InnerModel2 value) => _innerModel2Serializer.toMap(value,
                   withType: withType, typeKey: typeKey)));
       setTypeKeyValue(typeKey, modelString(), withType, ret);
@@ -93,9 +92,9 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
       model = createModel();
     }
     model.id = map["id"];
-    model.list = safeIterableMapper<Map>(map["list"],
+    model.list = nullableIterableMapper<Map>(map["list"],
         (Map val) => _innerModel1Serializer.fromMap(val, typeKey: typeKey));
-    model.map = mapMaker<String, Map>(map["map"], (String key) => key,
+    model.map = nullableMapMaker<Map>(map["map"],
         (Map value) => _innerModel2Serializer.fromMap(value, typeKey: typeKey));
     return model;
   }

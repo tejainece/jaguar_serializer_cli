@@ -72,14 +72,6 @@ class SerializedPropertyFrom implements LeafPropertyFrom {
 
 PropertyFrom _parsePropertyFrom(
     SerializerInfo info, String fieldName, InterfaceType type) {
-  if (type.isDynamic) {
-    throw new JaguarCliException(
-        'Cannot serialize "dynamic" type for property $fieldName!');
-  } else if (type.isObject) {
-    throw new JaguarCliException(
-        'Cannot serialize "Object" type for property $fieldName!');
-  }
-
   if (isList.isExactlyType(type)) {
     final DartType param = type.typeArguments.first;
     return new ListPropertyFrom(
@@ -92,8 +84,17 @@ PropertyFrom _parsePropertyFrom(
         key.displayName,
         _parsePropertyFrom(info, fieldName, value),
         value.displayName);
+  } else if (info.processors.containsKey(fieldName)) {
+    String instStr = info.processors[fieldName].instantiationString;
+    return new CustomPropertyFrom(instStr);
   } else if (isBuiltin(type)) {
     return new BuiltinLeafPropertyFrom(type.displayName);
+  } else if (type.isDynamic) {
+    throw new JaguarCliException(
+        'Cannot serialize "dynamic" type for property $fieldName!');
+  } else if (type.isObject) {
+    throw new JaguarCliException(
+        'Cannot serialize "Object" type for property $fieldName!');
   } else {
     DartType ser;
 
@@ -126,21 +127,16 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
   }
 
   bool nullable = info.globalNullableFields;
-  if (info.nullableFields.containsKey(field.name)) {
+  if (defaultValueFromConstructor || defaultValue != null) {
+    nullable = false;
+  } else if (info.nullableFields.containsKey(field.name)) {
     nullable = info.nullableFields[field.name];
   }
-
-  if (info.processors.containsKey(field.name)) {
-    String instStr = info.processors[field.name].instantiationString;
-    return new FieldFrom(key, field.name, new CustomPropertyFrom(instStr),
-        defaultValue, defaultValueFromConstructor, nullable);
-  } else {
-    return new FieldFrom(
-        key,
-        field.name,
-        _parsePropertyFrom(info, field.name, field.type),
-        defaultValue,
-        defaultValueFromConstructor,
-        nullable);
-  }
+  return new FieldFrom(
+      key,
+      field.name,
+      _parsePropertyFrom(info, field.name, field.type),
+      defaultValue,
+      defaultValueFromConstructor,
+      nullable);
 }

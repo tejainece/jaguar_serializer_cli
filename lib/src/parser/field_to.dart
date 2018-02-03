@@ -54,14 +54,6 @@ class SerializedPropertyTo implements LeafPropertyTo {
 
 PropertyTo _parsePropertyTo(
     SerializerInfo info, String fieldName, InterfaceType type) {
-  if (type.isDynamic) {
-    throw new JaguarCliException(
-        'Cannot serialize "dynamic" type for property $fieldName!');
-  } else if (type.isObject) {
-    throw new JaguarCliException(
-        'Cannot serialize "Object" type for property $fieldName!');
-  }
-
   if (isList.isExactlyType(type)) {
     final DartType param = type.typeArguments.first;
     return new ListPropertyTo(
@@ -74,8 +66,17 @@ PropertyTo _parsePropertyTo(
         key.displayName,
         _parsePropertyTo(info, fieldName, value),
         value.displayName);
+  } else if (info.processors.containsKey(fieldName)) {
+    String instStr = info.processors[fieldName].instantiationString;
+    return new CustomPropertyTo(instStr);
   } else if (isBuiltin(type)) {
     return new BuiltinLeafPropertyTo();
+  } else if (type.isDynamic) {
+    throw new JaguarCliException(
+        'Cannot serialize "dynamic" type for property $fieldName!');
+  } else if (type.isObject) {
+    throw new JaguarCliException(
+        'Cannot serialize "Object" type for property $fieldName!');
   } else {
     DartType ser;
 
@@ -99,12 +100,7 @@ FieldTo _parseFieldTo(SerializerInfo info, ModelField field, String key) {
   if (info.nullableFields.containsKey(field.name)) {
     nullable = info.nullableFields[field.name];
   }
-  if (info.processors.containsKey(field.name)) {
-    String instStr = info.processors[field.name].instantiationString;
-    return new FieldTo(
-        key, field.name, new CustomPropertyTo(instStr), nullable);
-  } else {
-    return new FieldTo(key, field.name,
-        _parsePropertyTo(info, field.name, field.type), nullable);
-  }
+
+  return new FieldTo(key, field.name,
+      _parsePropertyTo(info, field.name, field.type), nullable);
 }

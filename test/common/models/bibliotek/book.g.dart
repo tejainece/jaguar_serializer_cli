@@ -7,25 +7,34 @@ part of serializer.test.models.book;
 // **************************************************************************
 
 abstract class _$BookSerializer implements Serializer<Book> {
-  final _mapKeyNumToStringProcessor = const MapKeyNumToStringProcessor();
+  final _uriProcessor = const UriProcessor();
+  final _dateTimeProcessor = const DateTimeProcessor();
   final _authorSerializer = new AuthorSerializer();
 
   Map toMap(Book model, {bool withType: false, String typeKey}) {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
-      setNonNullableValue(ret, "tags",
-          safeIterableMapper<String>(model.tags, (String val) => val));
-      setNonNullableValue(ret, "publishedDates",
-          _mapKeyNumToStringProcessor.serialize(model.publishedDates));
-      setNonNullableValue(
+      setNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "tags",
+          nullableIterableMapper<String>(model.tags, (String val) => val));
+      setNullableValue(
+          ret,
+          "publishedDates",
+          nullableMapMaker<DateTime>(model.publishedDates,
+              (DateTime value) => _dateTimeProcessor.serialize(value)));
+      setNullableValue(
           ret,
           "authors",
-          safeIterableMapper<Author>(
+          nullableIterableMapper<Author>(
               model.authors,
               (Author val) => _authorSerializer.toMap(val,
                   withType: withType, typeKey: typeKey)));
+      setNullableValue(
+          ret,
+          "websites",
+          nullableIterableMapper<Uri>(
+              model.websites, (Uri val) => _uriProcessor.serialize(val)));
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -39,11 +48,14 @@ abstract class _$BookSerializer implements Serializer<Book> {
       model = createModel();
     }
     model.name = map["name"];
-    model.tags = safeIterableMapper<String>(map["tags"], (String val) => val);
-    model.publishedDates =
-        _mapKeyNumToStringProcessor.deserialize(map["publishedDates"]);
-    model.authors = safeIterableMapper<Map>(map["authors"],
+    model.tags =
+        nullableIterableMapper<String>(map["tags"], (String val) => val);
+    model.publishedDates = nullableMapMaker<dynamic>(map["publishedDates"],
+        (dynamic value) => _dateTimeProcessor.deserialize(value));
+    model.authors = nullableIterableMapper<Map>(map["authors"],
         (Map val) => _authorSerializer.fromMap(val, typeKey: typeKey));
+    model.websites = nullableIterableMapper<dynamic>(
+        map["websites"], (dynamic val) => _uriProcessor.deserialize(val));
     return model;
   }
 

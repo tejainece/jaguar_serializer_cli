@@ -116,7 +116,7 @@ class Writer {
       _w.writeln('setNonNullableValue(ret,');
     }
     _w.writeln('"${item.key}",');
-    final writer = new ToItemWriter(item.property);
+    final writer = new ToItemWriter(item);
     _w.writeln(writer.generate('model.${item.name}'));
     _w.writeln(');');
   }
@@ -141,16 +141,13 @@ class Writer {
   }
 
   void _fromItemWriter(FieldFrom item) {
-    FromItemWriter writer = new FromItemWriter(item.property);
+    FromItemWriter writer = new FromItemWriter(item);
 
     _w.write('model.${item.name} = ');
     if (!item.nullable && item.defaultValue != null) {
-      _w.write(writer.generate('map["${item.key}"] ?? ${item.defaultValue}'));
-    } else if (!item.nullable &&
-        item.defaultValue == null &&
-        item.defaultValueFromConstructor) {
-      _w.write(writer.generate('map["${item.key}"]'));
-      _w.write(' ?? model.${item.name}');
+      _w.write(writer.generate('map["${item.key}"]', "${item.defaultValue}"));
+    } else if (!item.nullable && item.defaultValueFromConstructor) {
+      _w.write(writer.generate('map["${item.key}"]', "model.${item.name}"));
     } else {
       _w.write(writer.generate('map["${item.key}"]'));
     }

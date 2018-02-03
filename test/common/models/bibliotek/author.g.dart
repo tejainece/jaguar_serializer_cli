@@ -11,7 +11,7 @@ abstract class _$AuthorSerializer implements Serializer<Author> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "name", model.name);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;

@@ -11,10 +11,10 @@ abstract class _$DefaultValue implements Serializer<DefaultValue> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
-      setNonNullableValue(ret, "list",
-          safeIterableMapper<String>(model.list, (String val) => val));
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "list",
+          nullableIterableMapper<String>(model.list, (String val) => val));
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -29,8 +29,8 @@ abstract class _$DefaultValue implements Serializer<DefaultValue> {
     }
     model.foo = map["foo"] ?? model.foo;
     model.bar = map["bar"];
-    model.list = safeIterableMapper<String>(map["list"], (String val) => val) ??
-        model.list;
+    model.list = nonNullableIterableMapper<String>(
+        map["list"], (String val) => val, model.list);
     return model;
   }
 
@@ -42,8 +42,8 @@ abstract class _$DefaultString implements Serializer<DefaultString> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -69,8 +69,8 @@ abstract class _$DefaultInt implements Serializer<DefaultInt> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -96,8 +96,8 @@ abstract class _$DefaultDouble implements Serializer<DefaultDouble> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -123,8 +123,8 @@ abstract class _$DefaultBool implements Serializer<DefaultBool> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "foo", model.foo);
-      setNonNullableValue(ret, "bar", model.bar);
+      setNullableValue(ret, "foo", model.foo);
+      setNullableValue(ret, "bar", model.bar);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -143,34 +143,4 @@ abstract class _$DefaultBool implements Serializer<DefaultBool> {
   }
 
   String modelString() => "DefaultBool";
-}
-
-abstract class _$DefaultDate implements Serializer<DefaultDate> {
-  final _dateTimeProcessor = const DateTimeProcessor();
-
-  Map toMap(DefaultDate model, {bool withType: false, String typeKey}) {
-    Map<String, dynamic> ret;
-    if (model != null) {
-      ret = <String, dynamic>{};
-      setNonNullableValue(ret, "f", _dateTimeProcessor.serialize(model.foo));
-      setNonNullableValue(ret, "bar", model.bar);
-      setTypeKeyValue(typeKey, modelString(), withType, ret);
-    }
-    return ret;
-  }
-
-  DefaultDate fromMap(Map map, {DefaultDate model, String typeKey}) {
-    if (map is! Map) {
-      return null;
-    }
-    if (model is! DefaultDate) {
-      model = createModel();
-    }
-    model.foo =
-        _dateTimeProcessor.deserialize(map["f"] ?? "1994-03-29T06:00:00Z");
-    model.bar = map["bar"];
-    return model;
-  }
-
-  String modelString() => "DefaultDate";
 }

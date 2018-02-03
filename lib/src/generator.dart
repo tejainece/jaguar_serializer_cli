@@ -37,6 +37,9 @@ class JaguarSerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
 
       final info = instantiator.instantiate();
 
+      // todo check info validity
+      // for example valueFromConstructor == true && isNullable == false is not possible
+
       final writerInfo = new WriterInfo.fromInfo(info);
 
       final writer = new Writer(writerInfo);

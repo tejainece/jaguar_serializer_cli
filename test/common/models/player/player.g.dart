@@ -11,10 +11,10 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
-      setNonNullableValue(ret, "email", model.email);
-      setNonNullableValue(ret, "age", model.age);
-      setNonNullableValue(ret, "score", model.score);
+      setNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "email", model.email);
+      setNullableValue(ret, "age", model.age);
+      setNullableValue(ret, "score", model.score);
       setNonNullableValue(ret, "emailConfirmed", model.emailConfirmed);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
@@ -44,10 +44,10 @@ abstract class _$PlayerSerializerIgnore implements Serializer<Player> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
-      setNonNullableValue(ret, "email", model.email);
-      setNonNullableValue(ret, "age", model.age);
-      setNonNullableValue(ret, "score", model.score);
+      setNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "email", model.email);
+      setNullableValue(ret, "age", model.age);
+      setNullableValue(ret, "score", model.score);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -75,8 +75,8 @@ abstract class _$PlayerSerializerIgnores implements Serializer<Player> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
-      setNonNullableValue(ret, "score", model.score);
+      setNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "score", model.score);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;
@@ -102,11 +102,11 @@ abstract class _$PlayerSerializerRename implements Serializer<Player> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "N", model.name);
-      setNonNullableValue(ret, "email", model.email);
-      setNonNullableValue(ret, "age", model.age);
-      setNonNullableValue(ret, "S", model.score);
-      setNonNullableValue(ret, "eC", model.emailConfirmed);
+      setNullableValue(ret, "N", model.name);
+      setNullableValue(ret, "email", model.email);
+      setNullableValue(ret, "age", model.age);
+      setNullableValue(ret, "S", model.score);
+      setNullableValue(ret, "eC", model.emailConfirmed);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;

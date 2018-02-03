@@ -5,7 +5,7 @@ import "package:test/test.dart";
 
 void main() {
   group("Base", () {
-    group("To", () {
+    group("encode", () {
       Player player;
 
       setUp(() {
@@ -18,7 +18,7 @@ void main() {
       });
 
       // Check if toMap converts all fields to Map items
-      test("Map", () {
+      test("should convert to Map<String, dynamic>", () {
         PlayerSerializer serializer = new PlayerSerializer();
         Map result = serializer.toMap(player);
         expect(result, containsPair("name", "John"));
@@ -28,7 +28,7 @@ void main() {
         expect(result, containsPair("emailConfirmed", true));
       });
 
-      test("Map 2", () {
+      test("should convert to Map<String, dynamic> without null fields", () {
         player.emailConfirmed = null;
 
         PlayerSerializer serializer = new PlayerSerializer();
@@ -41,7 +41,7 @@ void main() {
         expect(result, isNot(contains("emailConfirmed")));
       });
 
-      test("IgnoreField", () {
+      test("should ignore 'emailConfirmed' field", () {
         PlayerSerializerIgnore serializer = new PlayerSerializerIgnore();
 
         Map result = serializer.toMap(player);
@@ -52,30 +52,27 @@ void main() {
         expect(result, isNot(contains("emailConfirmed")));
       });
 
-      test("IgnoreFields", () {
+      test("should ignore multiple fields", () {
         PlayerSerializerIgnores serializer = new PlayerSerializerIgnores();
 
         Map result = serializer.toMap(player);
         expect(result, containsPair("name", "John"));
-        expect(result["email"], isNull);
-        expect(result["age"], isNull);
         expect(result, containsPair("score", 1000));
-        expect(result["emailConfirmed"], isNull);
+        expect(result, isNot(contains("email")));
+        expect(result, isNot(contains("age")));
+        expect(result, isNot(contains("emailConfirmed")));
       });
 
-      test("Rename key", () {
+      test("should rename fields", () {
         PlayerSerializerRename serializer = new PlayerSerializerRename();
         Map result = serializer.toMap(player);
         expect(result, containsPair("N", "John"));
-        //todo: does not work on browser
-        //expect(result, containsPair("E", "john@noemail.com"));
-        //expect(result, containsPair("A", 25));
         expect(result, containsPair("S", 1000));
         expect(result, containsPair("eC", true));
       });
 
       // Check if toMap converts all fields to Map items
-      test("Exclude by default", () {
+      test("should exclude all fields by default", () {
         ExcludeByDefaultCodec serializer = new ExcludeByDefaultCodec();
         ExcludeByDefault model = new ExcludeByDefault();
         model.id = "2";
@@ -91,7 +88,7 @@ void main() {
       });
     });
 
-    group("From", () {
+    group("decode", () {
       Map m;
 
       setUp(() {
@@ -104,7 +101,7 @@ void main() {
       });
 
       // Check if fromMap converts all Map items to fields
-      test("Map", () {
+      test("should decode map to Player", () {
         PlayerSerializer serializer = new PlayerSerializer();
         Player player = serializer.fromMap(m);
         expect(player.name, "John");
@@ -115,7 +112,7 @@ void main() {
       });
 
       // When field not present in Map
-      test("Field not present", () {
+      test("should decode map to Player with null field", () {
         m.remove("emailConfirmed");
 
         PlayerSerializer serializer = new PlayerSerializer();
@@ -128,7 +125,7 @@ void main() {
       });
 
       // Ignore field
-      test("IgnoreField", () {
+      test("should ignore field in map", () {
         PlayerSerializerIgnore serializer = new PlayerSerializerIgnore();
         Player player = serializer.fromMap(m);
         expect(player.name, "John");
@@ -139,22 +136,22 @@ void main() {
       });
 
       // Ignore fields
-      test("IgnoreFields", () {
+      test("should ignore multiple fields in map", () {
         PlayerSerializerIgnores serializer = new PlayerSerializerIgnores();
         Player player = serializer.fromMap(m);
         expect(player.name, "John");
-        expect(player.email, null);
-        expect(player.age, null);
+        expect(player.email, isNull);
+        expect(player.age, isNull);
         expect(player.score, 1000);
         expect(player.emailConfirmed, isNull);
       });
 
-      test("Rename key", () {
+      test("should handle renamed field", () {
         m = {};
         m["N"] = "John";
         m["email"] = "john@noemail.com";
         m["age"] = 25;
-        m["S"] = 1000;
+        m["S"] = 1000; // EncodeOnly
         m["eC"] = true;
 
         PlayerSerializerRename serializer = new PlayerSerializerRename();
@@ -162,12 +159,12 @@ void main() {
         expect(player.name, "John");
         expect(player.email, "john@noemail.com");
         expect(player.age, 25);
-        expect(player.score, null);
+        expect(player.score, isNull);
         expect(player.emailConfirmed, true);
       });
     });
 
-    test("Inheritance", () {
+    test("should handle inheritance", () {
       Inheritance d = new Inheritance();
       final serializer = new InheritanceSerializer();
       expect(serializer.serialize(d),
@@ -179,7 +176,7 @@ void main() {
       });
     });
 
-    test("ModelInt", () {
+    test("should handle int", () {
       ModelInt d = new ModelInt();
       final serializer = new ModelIntSerializer();
       expect(serializer.serialize(d), {"bar": 42, "clazzA": "ClassA"});
@@ -187,7 +184,7 @@ void main() {
           {"bar": 42, "clazzA": "ClassA", defaultTypeInfoKey: "ModelInt"});
     });
 
-    test("ModelDouble", () {
+    test("should handle double", () {
       ModelDouble d = new ModelDouble();
       final serializer = new ModelDoubleSerializer();
       expect(serializer.serialize(d), {"bar": 42.42, "clazzA": "ClassA"});
@@ -198,7 +195,7 @@ void main() {
       });
     });
 
-    test("DateTimeProcessor", () {
+    test("should handle processor", () {
       DateTime now = new DateTime.now();
 
       Date d = new Date(now);
@@ -212,14 +209,7 @@ void main() {
       });
     });
 
-    test("Serialized name", () {
-      ModelRenamed model = new ModelRenamed("foo");
-      final serializer = new ModelRenamedSerializer();
-
-      expect(serializer.serialize(model), {"renamed": "foo"});
-    });
-
-    test("Serialize With CustomModelName", () {
+    test("should handle custom model name", () {
       CustomModelName model = new CustomModelName()..foo = "bar";
       final serializer = new CustomModelNameSerializer();
       expect(serializer.serialize(model, withType: true),
@@ -227,7 +217,7 @@ void main() {
     });
 
     // Check if fromMap converts all Map items to fields
-    test("Exclude by default", () {
+    test("should handle includeByDefault false", () {
       ExcludeByDefaultCodec serializer = new ExcludeByDefaultCodec();
       Map m = {};
       m["id"] = "1";

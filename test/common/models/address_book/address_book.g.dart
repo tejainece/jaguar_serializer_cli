@@ -13,8 +13,8 @@ abstract class _$Person implements Serializer<Person> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "name", model.name);
-      setNonNullableValue(ret, "address",
+      setNullableValue(ret, "name", model.name);
+      setNullableValue(ret, "address",
           _address.toMap(model.address, withType: withType, typeKey: typeKey));
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
@@ -41,11 +41,11 @@ abstract class _$Address implements Serializer<Address> {
     Map<String, dynamic> ret;
     if (model != null) {
       ret = <String, dynamic>{};
-      setNonNullableValue(ret, "street", model.street);
-      setNonNullableValue(ret, "houseNum", model.houseNum);
-      setNonNullableValue(ret, "city", model.city);
-      setNonNullableValue(ret, "country", model.country);
-      setNonNullableValue(ret, "pincode", model.pincode);
+      setNullableValue(ret, "street", model.street);
+      setNullableValue(ret, "houseNum", model.houseNum);
+      setNullableValue(ret, "city", model.city);
+      setNullableValue(ret, "country", model.country);
+      setNullableValue(ret, "pincode", model.pincode);
       setTypeKeyValue(typeKey, modelString(), withType, ret);
     }
     return ret;

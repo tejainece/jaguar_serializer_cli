@@ -6,8 +6,8 @@ import 'package:jaguar_serializer/jaguar_serializer.dart';
 part 'default_value.g.dart';
 
 @GenSerializer(fields: const {
-  'foo': const Property(valueFromConstructor: true, isNullable: false),
-  "list": const Property(valueFromConstructor: true, isNullable: false)
+  'foo': const Property(valueFromConstructor: true),
+  "list": const Property(valueFromConstructor: true)
 })
 class DefaultValue extends Serializer<DefaultValue> with _$DefaultValue {
   String foo;
@@ -64,10 +64,9 @@ class DefaultBool extends Serializer<DefaultBool> with _$DefaultBool {
   DefaultBool createModel() => new DefaultBool();
 }
 
-@GenSerializer(fields: const {
+/* @GenSerializer(fields: const {
   'foo': const EnDecode(
       alias: 'f',
-      defaultsTo: "1994-03-29T06:00:00Z",
       processor: const DateTimeProcessor())
 })
 class DefaultDate extends Serializer<DefaultDate> with _$DefaultDate {
@@ -78,4 +77,4 @@ class DefaultDate extends Serializer<DefaultDate> with _$DefaultDate {
 
   @override
   DefaultDate createModel() => new DefaultDate();
-}
+} */
