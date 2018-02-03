@@ -1,6 +1,5 @@
 import 'common/models/nullable/nullable.dart';
 import 'common/models/base/base.dart';
-import 'package:jaguar_serializer/jaguar_serializer.dart';
 import 'package:test/test.dart';
 
 main() {

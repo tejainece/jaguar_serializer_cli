@@ -1,7 +1,6 @@
 library serializer.test.models.Author;
 
 import 'package:jaguar_serializer/jaguar_serializer.dart';
-import '../address_book/address_book.dart';
 part 'author.g.dart';
 
 @GenSerializer(serializers: const [])

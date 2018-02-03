@@ -1,6 +1,5 @@
 library serializer.test.default_value;
 
-import '../../processors.dart';
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 
 part 'default_value.g.dart';
