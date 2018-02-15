@@ -1,31 +1,36 @@
 part of jaguar_serializer.generator.helpers;
 
-class ModelField {
+class Field {
   /// Name of the field
-  String name;
+  final String name;
 
   /// Type of the field
-  InterfaceType type;
+  final InterfaceType type;
 
-  ModelField(this.name, this.type);
+  final bool isFinal;
+
+  Field(this.name, this.type, {this.isFinal: false});
 }
 
 class Model {
-  Map<String, ModelField> _fieldsTo = {};
+  final ctorArguments = <ParameterElement>[];
+  final ctorNamedArguments = <ParameterElement>[];
+  final _fieldsTo = <String, Field>{};
+  final _fieldsFrom = <String, Field>{};
 
-  Map<String, ModelField> _fieldsFrom = {};
-
-  void addTo(ModelField field) {
+  void addTo(Field field) {
     _fieldsTo[field.name] = field;
   }
 
-  void addFrom(ModelField field) {
+  void addFrom(Field field) {
     _fieldsFrom[field.name] = field;
   }
 
-  List<ModelField> get to => _fieldsTo.values.toList();
+  Field getFrom(String name) => _fieldsFrom[name];
 
-  List<ModelField> get from => _fieldsFrom.values.toList();
+  List<Field> getters() => _fieldsTo.values.toList();
+
+  List<Field> setters() => _fieldsFrom.values.toList();
 }
 
 class FieldProcessorInfo {
@@ -82,7 +87,7 @@ class SerializerInfo {
 }
 
 /// Instantiates [GenSerializer] from [DartObject]
-class Instantiator {
+class AnnotationParser {
   final ConstantReader obj;
 
   final ClassElement element;
@@ -117,9 +122,9 @@ class Instantiator {
 
   Map<String, bool> defaultValueFromConstructor = {};
 
-  Instantiator(this.element, this.obj);
+  AnnotationParser(this.element, this.obj);
 
-  SerializerInfo instantiate() {
+  SerializerInfo parse() {
     final bool nullable = obj.peek('nullableFields')?.boolValue ?? false;
 
     _makeName();
@@ -142,7 +147,8 @@ class Instantiator {
         globalNullableFields: nullable,
         defaultValues: defaultValues,
         defaultValuesFromConstructor: defaultValueFromConstructor);
-    ret.model = parseModel(modelType.element, ret, includeByDefault);
+    ret.model = _parseFields(modelType.element, ret, includeByDefault);
+    _makeCtor(modelType.element, ret.model);
     return ret;
   }
 
@@ -256,7 +262,7 @@ class Instantiator {
     });
   }
 
-  Model parseModel(
+  Model _parseFields(
       ClassElement el, SerializerInfo info, bool includeByDefault) {
     final mod = new Model();
 
@@ -275,19 +281,41 @@ class Instantiator {
       if (field.isGetter) {
         if (info.to[field.displayName] != null ||
             (includeByDefault && !info.to.containsKey(field.displayName))) {
-          mod.addTo(new ModelField(field.displayName, field.returnType));
+          mod.addTo(new Field(field.displayName, field.returnType));
         }
       }
 
       if (field.isSetter) {
         if (info.from[field.displayName] != null ||
             (includeByDefault && !info.from.containsKey(field.displayName))) {
-          mod.addFrom(new ModelField(
-              field.displayName, field.type.parameters.first.type));
+          mod.addFrom(
+              new Field(field.displayName, field.type.parameters.first.type));
         }
       }
     });
 
+    el.fields.where((f) => f.isFinal).forEach((FieldElement f) {
+      mod.addFrom(new Field(f.displayName, f.type, isFinal: true));
+    });
+
     return mod;
+  }
+
+  void _makeCtor(ClassElement el, Model model) {
+    ConstructorElement ctor = el.unnamedConstructor;
+    if (ctor == null) {
+      throw new JaguarCliException(
+          "The class `${el.name}` has no default constructor.");
+    }
+    for (final arg in ctor.parameters) {
+      final field = model.getFrom(arg.name);
+      if (field?.isFinal == true) {
+        if (arg.parameterKind == ParameterKind.NAMED) {
+          model.ctorNamedArguments.add(arg);
+        } else {
+          model.ctorArguments.add(arg);
+        }
+      }
+    }
   }
 }

@@ -9,8 +9,6 @@ class Person extends Serializer<Person> with _$Person {
   String name;
 
   Address address;
-
-  Person createModel() => new Person();
 }
 
 @GenSerializer()
@@ -26,6 +24,4 @@ class Address extends Serializer<Address> with _$Address {
   String pincode;
 
   Address();
-
-  Address createModel() => new Address();
 }

@@ -1,5 +1,6 @@
 library jaguar_serializer.generator.helpers;
 
+import 'package:analyzer/analyzer.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/constant/value.dart';

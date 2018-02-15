@@ -55,7 +55,7 @@ abstract class _$NullableSerializer implements Serializer<Model> {
       return null;
     }
     if (model is! Model) {
-      model = createModel();
+      model = new Model();
     }
     model.foo = map["foo"];
     model.modelInt =
@@ -129,7 +129,7 @@ abstract class _$NonNullableSerializer implements Serializer<Model> {
       return null;
     }
     if (model is! Model) {
-      model = createModel();
+      model = new Model();
     }
     model.foo = map["foo"];
     model.modelInt =

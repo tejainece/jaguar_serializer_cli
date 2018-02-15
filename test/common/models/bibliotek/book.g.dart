@@ -45,7 +45,7 @@ abstract class _$BookSerializer implements Serializer<Book> {
       return null;
     }
     if (model is! Book) {
-      model = createModel();
+      model = new Book();
     }
     model.name = map["name"];
     model.tags =

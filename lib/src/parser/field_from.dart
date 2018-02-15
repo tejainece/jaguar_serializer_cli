@@ -13,8 +13,10 @@ class FieldFrom {
 
   final bool defaultValueFromConstructor;
 
+  final bool isFinal;
+
   FieldFrom(this.key, this.name, this.property, this.defaultValue,
-      this.defaultValueFromConstructor, this.nullable);
+      this.defaultValueFromConstructor, this.nullable, this.isFinal);
 }
 
 abstract class PropertyFrom {
@@ -113,7 +115,7 @@ PropertyFrom _parsePropertyFrom(
   }
 }
 
-FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
+FieldFrom _parseFieldFrom(SerializerInfo info, Field field, String key) {
   String defaultValue;
 
   if (info.defaultValues.containsKey(field.name)) {
@@ -138,5 +140,6 @@ FieldFrom _parseFieldFrom(SerializerInfo info, ModelField field, String key) {
       _parsePropertyFrom(info, field.name, field.type),
       defaultValue,
       defaultValueFromConstructor,
-      nullable);
+      nullable,
+      field.isFinal);
 }

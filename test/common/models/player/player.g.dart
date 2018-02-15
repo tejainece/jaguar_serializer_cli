@@ -26,7 +26,7 @@ abstract class _$PlayerSerializer implements Serializer<Player> {
       return null;
     }
     if (model is! Player) {
-      model = createModel();
+      model = new Player();
     }
     model.name = map["name"];
     model.email = map["email"];
@@ -58,7 +58,7 @@ abstract class _$PlayerSerializerIgnore implements Serializer<Player> {
       return null;
     }
     if (model is! Player) {
-      model = createModel();
+      model = new Player();
     }
     model.name = map["name"];
     model.email = map["email"];
@@ -87,7 +87,7 @@ abstract class _$PlayerSerializerIgnores implements Serializer<Player> {
       return null;
     }
     if (model is! Player) {
-      model = createModel();
+      model = new Player();
     }
     model.name = map["name"];
     model.score = map["score"];
@@ -117,7 +117,7 @@ abstract class _$PlayerSerializerRename implements Serializer<Player> {
       return null;
     }
     if (model is! Player) {
-      model = createModel();
+      model = new Player();
     }
     model.name = map["N"];
     model.email = map["email"];

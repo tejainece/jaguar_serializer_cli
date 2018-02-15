@@ -35,7 +35,4 @@ class Complex {
 }, serializers: const [
   WithIgnoreSerializer,
 ])
-class ComplexSerializer extends Serializer<Complex> with _$ComplexSerializer {
-  @override
-  Complex createModel() => new Complex();
-}
+class ComplexSerializer extends Serializer<Complex> with _$ComplexSerializer {}

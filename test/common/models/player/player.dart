@@ -6,27 +6,15 @@ part 'player.g.dart';
 
 @GenSerializer(
     fields: const {'emailConfirmed': const Property(isNullable: false)})
-class PlayerSerializer extends Serializer<Player> with _$PlayerSerializer {
-  Player createModel() => new Player();
-
-  PlayerSerializer();
-}
+class PlayerSerializer extends Serializer<Player> with _$PlayerSerializer {}
 
 @GenSerializer(ignore: const ['emailConfirmed'])
 class PlayerSerializerIgnore extends Serializer<Player>
-    with _$PlayerSerializerIgnore {
-  Player createModel() => new Player();
-
-  PlayerSerializerIgnore();
-}
+    with _$PlayerSerializerIgnore {}
 
 @GenSerializer(ignore: const ['emailConfirmed', 'age', 'email'])
 class PlayerSerializerIgnores extends Serializer<Player>
-    with _$PlayerSerializerIgnores {
-  Player createModel() => new Player();
-
-  PlayerSerializerIgnores();
-}
+    with _$PlayerSerializerIgnores {}
 
 @GenSerializer(fields: const {
   'name': const EnDecode(alias: 'N'),
@@ -34,11 +22,7 @@ class PlayerSerializerIgnores extends Serializer<Player>
   'emailConfirmed': const EnDecode(alias: 'eC'),
 })
 class PlayerSerializerRename extends Serializer<Player>
-    with _$PlayerSerializerRename {
-  Player createModel() => new Player();
-
-  PlayerSerializerRename();
-}
+    with _$PlayerSerializerRename {}
 
 /// Player model for the game
 class Player {

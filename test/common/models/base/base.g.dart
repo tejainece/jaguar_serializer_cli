@@ -23,7 +23,7 @@ abstract class _$ExcludeByDefaultCodec implements Serializer<ExcludeByDefault> {
       return null;
     }
     if (model is! ExcludeByDefault) {
-      model = createModel();
+      model = new ExcludeByDefault();
     }
     model.id = map["id"];
     model.name = map["name"];
@@ -50,7 +50,7 @@ abstract class _$ModelIntSerializer implements Serializer<ModelInt> {
       return null;
     }
     if (model is! ModelInt) {
-      model = createModel();
+      model = new ModelInt();
     }
     model.bar = map["bar"];
     model.clazzA = map["clazzA"];
@@ -77,7 +77,7 @@ abstract class _$ModelDoubleSerializer implements Serializer<ModelDouble> {
       return null;
     }
     if (model is! ModelDouble) {
-      model = createModel();
+      model = new ModelDouble();
     }
     model.bar = map["bar"];
     model.clazzA = map["clazzA"];
@@ -104,7 +104,7 @@ abstract class _$InheritanceSerializer implements Serializer<Inheritance> {
       return null;
     }
     if (model is! Inheritance) {
-      model = createModel();
+      model = new Inheritance();
     }
     model.clazzA = map["clazzA"];
     model.clazzB = map["clazzB"];
@@ -133,7 +133,7 @@ abstract class _$DateSerializer implements Serializer<Date> {
       return null;
     }
     if (model is! Date) {
-      model = createModel();
+      model = new Date();
     }
     model.date = _dateTimeProcessor.deserialize(map["date"]);
     model.clazzA = map["clazzA"];
@@ -159,7 +159,7 @@ abstract class _$WithIgnoreSerializer implements Serializer<WithIgnore> {
       return null;
     }
     if (model is! WithIgnore) {
-      model = createModel();
+      model = new WithIgnore();
     }
     model.a = map["a"];
     return model;
@@ -184,7 +184,7 @@ abstract class _$ModelRenamedSerializer implements Serializer<ModelRenamed> {
       return null;
     }
     if (model is! ModelRenamed) {
-      model = createModel();
+      model = new ModelRenamed();
     }
     model.original = map["renamed"];
     return model;
@@ -210,7 +210,7 @@ abstract class _$CustomModelNameSerializer
       return null;
     }
     if (model is! CustomModelName) {
-      model = createModel();
+      model = new CustomModelName();
     }
     model.foo = map["foo"];
     return model;

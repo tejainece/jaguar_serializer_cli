@@ -24,9 +24,7 @@ class Model {
   'listDates': const Property(processor: const DateTimeProcessor()),
   'mapDates': const Property(processor: const DateTimeProcessor())
 })
-class NullableSerializer extends Serializer<Model> with _$NullableSerializer {
-  Model createModel() => new Model();
-}
+class NullableSerializer extends Serializer<Model> with _$NullableSerializer {}
 
 @GenSerializer(nullableFields: false, serializers: const [
   ModelIntSerializer
@@ -36,6 +34,4 @@ class NullableSerializer extends Serializer<Model> with _$NullableSerializer {
   'mapDates': const Property(processor: const DateTimeProcessor())
 })
 class NonNullableSerializer extends Serializer<Model>
-    with _$NonNullableSerializer {
-  Model createModel() => new Model();
-}
+    with _$NonNullableSerializer {}

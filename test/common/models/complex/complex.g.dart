@@ -76,7 +76,7 @@ abstract class _$ComplexSerializer implements Serializer<Complex> {
       return null;
     }
     if (model is! Complex) {
-      model = createModel();
+      model = new Complex();
     }
     model.nums = nullableIterableMapper<num>(map["nums"], (num val) => val);
     model.strings =

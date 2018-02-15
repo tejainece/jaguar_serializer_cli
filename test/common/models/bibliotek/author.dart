@@ -4,11 +4,7 @@ import 'package:jaguar_serializer/jaguar_serializer.dart';
 part 'author.g.dart';
 
 @GenSerializer(serializers: const [])
-class AuthorSerializer extends Serializer<Author> with _$AuthorSerializer {
-  Author createModel() => new Author();
-
-  AuthorSerializer();
-}
+class AuthorSerializer extends Serializer<Author> with _$AuthorSerializer {}
 
 /// Author model
 class Author {

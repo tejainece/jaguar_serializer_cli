@@ -22,7 +22,7 @@ abstract class _$InnerModel1Serializer implements Serializer<InnerModel1> {
       return null;
     }
     if (model is! InnerModel1) {
-      model = createModel();
+      model = new InnerModel1();
     }
     model.number = map["number"];
     return model;
@@ -47,7 +47,7 @@ abstract class _$InnerModel2Serializer implements Serializer<InnerModel2> {
       return null;
     }
     if (model is! InnerModel2) {
-      model = createModel();
+      model = new InnerModel2();
     }
     model.name = map["name"];
     return model;
@@ -89,7 +89,7 @@ abstract class _$OuterModelSerializer implements Serializer<OuterModel> {
       return null;
     }
     if (model is! OuterModel) {
-      model = createModel();
+      model = new OuterModel();
     }
     model.id = map["id"];
     model.list = nullableIterableMapper<Map>(map["list"],

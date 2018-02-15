@@ -25,7 +25,7 @@ abstract class _$DefaultValue implements Serializer<DefaultValue> {
       return null;
     }
     if (model is! DefaultValue) {
-      model = createModel();
+      model = new DefaultValue();
     }
     model.foo = map["foo"] ?? model.foo;
     model.bar = map["bar"];
@@ -54,7 +54,7 @@ abstract class _$DefaultString implements Serializer<DefaultString> {
       return null;
     }
     if (model is! DefaultString) {
-      model = createModel();
+      model = new DefaultString();
     }
     model.foo = map["foo"] ?? "bar";
     model.bar = map["bar"];
@@ -81,7 +81,7 @@ abstract class _$DefaultInt implements Serializer<DefaultInt> {
       return null;
     }
     if (model is! DefaultInt) {
-      model = createModel();
+      model = new DefaultInt();
     }
     model.foo = map["foo"] ?? 42;
     model.bar = map["bar"];
@@ -108,7 +108,7 @@ abstract class _$DefaultDouble implements Serializer<DefaultDouble> {
       return null;
     }
     if (model is! DefaultDouble) {
-      model = createModel();
+      model = new DefaultDouble();
     }
     model.foo = map["foo"] ?? 42.42;
     model.bar = map["bar"];
@@ -135,7 +135,7 @@ abstract class _$DefaultBool implements Serializer<DefaultBool> {
       return null;
     }
     if (model is! DefaultBool) {
-      model = createModel();
+      model = new DefaultBool();
     }
     model.foo = map["foo"] ?? true;
     model.bar = map["bar"];

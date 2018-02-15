@@ -48,14 +48,14 @@ class CustomModelName {
 class ModelRenamed {
   String original;
 
-  ModelRenamed(this.original);
+  ModelRenamed([this.original]);
 }
 
 class WithIgnore {
   String a;
   String secret;
 
-  WithIgnore(this.a, this.secret);
+  WithIgnore([this.a, this.secret]);
 }
 
 class ExcludeByDefault {
@@ -79,58 +79,35 @@ class ExcludeByDefault {
   'name': const EnDecode(alias: 'name'),
 })
 class ExcludeByDefaultCodec extends Serializer<ExcludeByDefault>
-    with _$ExcludeByDefaultCodec {
-  ExcludeByDefault createModel() => new ExcludeByDefault();
-}
+    with _$ExcludeByDefaultCodec {}
 
 @GenSerializer()
 class ModelIntSerializer extends Serializer<ModelInt>
-    with _$ModelIntSerializer {
-  @override
-  ModelInt createModel() => new ModelInt();
-}
+    with _$ModelIntSerializer {}
 
 @GenSerializer()
 class ModelDoubleSerializer extends Serializer<ModelDouble>
-    with _$ModelDoubleSerializer {
-  @override
-  ModelDouble createModel() => new ModelDouble();
-}
+    with _$ModelDoubleSerializer {}
 
 @GenSerializer()
 class InheritanceSerializer extends Serializer<Inheritance>
-    with _$InheritanceSerializer {
-  @override
-  Inheritance createModel() => new Inheritance();
-}
+    with _$InheritanceSerializer {}
 
 @GenSerializer(
   fields: const {
     'date': const Property(processor: const DateTimeProcessor()),
   },
 )
-class DateSerializer extends Serializer<Date> with _$DateSerializer {
-  @override
-  Date createModel() => new Date();
-}
+class DateSerializer extends Serializer<Date> with _$DateSerializer {}
 
 @GenSerializer(ignore: const ['secret'])
 class WithIgnoreSerializer extends Serializer<WithIgnore>
-    with _$WithIgnoreSerializer {
-  @override
-  WithIgnore createModel() => new WithIgnore(null, null);
-}
+    with _$WithIgnoreSerializer {}
 
 @GenSerializer(fields: const {'original': const EnDecode(alias: 'renamed')})
 class ModelRenamedSerializer extends Serializer<ModelRenamed>
-    with _$ModelRenamedSerializer {
-  @override
-  ModelRenamed createModel() => new ModelRenamed(null);
-}
+    with _$ModelRenamedSerializer {}
 
 @GenSerializer(modelName: "MyCustomModelName")
 class CustomModelNameSerializer extends Serializer<CustomModelName>
-    with _$CustomModelNameSerializer {
-  @override
-  CustomModelName createModel() => new CustomModelName();
-}
+    with _$CustomModelNameSerializer {}

@@ -14,9 +14,7 @@ part 'book.g.dart';
   'websites': const Property(processor: const UriProcessor()),
   'publishedDates': const Property(processor: const DateTimeProcessor())
 })
-class BookSerializer extends Serializer<Book> with _$BookSerializer {
-  Book createModel() => new Book();
-}
+class BookSerializer extends Serializer<Book> with _$BookSerializer {}
 
 /// Player model for the game
 class Book {

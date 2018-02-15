@@ -6,23 +6,17 @@ part 'nested.g.dart';
 
 @GenSerializer()
 class InnerModel1Serializer extends Serializer<InnerModel1>
-    with _$InnerModel1Serializer {
-  InnerModel1 createModel() => new InnerModel1();
-}
+    with _$InnerModel1Serializer {}
 
 @GenSerializer()
 class InnerModel2Serializer extends Serializer<InnerModel2>
-    with _$InnerModel2Serializer {
-  InnerModel2 createModel() => new InnerModel2();
-}
+    with _$InnerModel2Serializer {}
 
 @GenSerializer(
   serializers: const [InnerModel1Serializer, InnerModel2Serializer],
 )
 class OuterModelSerializer extends Serializer<OuterModel>
-    with _$OuterModelSerializer {
-  OuterModel createModel() => new OuterModel();
-}
+    with _$OuterModelSerializer {}
 
 class InnerModel1 {
   int number;

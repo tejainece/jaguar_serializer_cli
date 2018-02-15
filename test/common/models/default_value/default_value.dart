@@ -14,9 +14,6 @@ class DefaultValue extends Serializer<DefaultValue> with _$DefaultValue {
   List<String> list;
 
   DefaultValue({this.foo: "bar", this.list: const ["foo", "bar"]});
-
-  @override
-  DefaultValue createModel() => new DefaultValue();
 }
 
 @GenSerializer(fields: const {'foo': const Property<String>(defaultsTo: "bar")})
@@ -25,9 +22,6 @@ class DefaultString extends Serializer<DefaultString> with _$DefaultString {
   String bar;
 
   DefaultString({this.foo});
-
-  @override
-  DefaultString createModel() => new DefaultString();
 }
 
 @GenSerializer(fields: const {'foo': const Property<int>(defaultsTo: 42)})
@@ -36,9 +30,6 @@ class DefaultInt extends Serializer<DefaultInt> with _$DefaultInt {
   String bar;
 
   DefaultInt({this.foo});
-
-  @override
-  DefaultInt createModel() => new DefaultInt();
 }
 
 @GenSerializer(fields: const {'foo': const Property<double>(defaultsTo: 42.42)})
@@ -47,9 +38,6 @@ class DefaultDouble extends Serializer<DefaultDouble> with _$DefaultDouble {
   String bar;
 
   DefaultDouble({this.foo});
-
-  @override
-  DefaultDouble createModel() => new DefaultDouble();
 }
 
 @GenSerializer(fields: const {'foo': const Property<bool>(defaultsTo: true)})
@@ -58,9 +46,6 @@ class DefaultBool extends Serializer<DefaultBool> with _$DefaultBool {
   String bar;
 
   DefaultBool({this.foo});
-
-  @override
-  DefaultBool createModel() => new DefaultBool();
 }
 
 /* @GenSerializer(fields: const {

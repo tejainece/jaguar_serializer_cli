@@ -28,12 +28,9 @@ class JaguarSerializerGenerator extends GeneratorForAnnotation<GenSerializer> {
       Element element, ConstantReader annotation, BuildStep buildStep) {
     if (element is! ClassElement) throw new JaguarCliException(_onlyClassMsg);
 
-    print("Generating serializer for ${element.name} ...");
-
     try {
-      final instantiator = new Instantiator(element, annotation);
-
-      final info = instantiator.instantiate();
+      final instantiator = new AnnotationParser(element, annotation);
+      final info = instantiator.parse();
 
       // todo check info validity
       // for example valueFromConstructor == true && isNullable == false is not possible

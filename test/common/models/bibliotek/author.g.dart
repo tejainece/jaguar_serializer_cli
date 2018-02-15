@@ -22,7 +22,7 @@ abstract class _$AuthorSerializer implements Serializer<Author> {
       return null;
     }
     if (model is! Author) {
-      model = createModel();
+      model = new Author();
     }
     model.name = map["name"];
     return model;

@@ -121,6 +121,27 @@ class Writer {
     _w.writeln(');');
   }
 
+  void _ctorWriter() {
+    _w.write('new $modelName(');
+    bool first = true;
+    info.ctorArguments.forEach((param) {
+      if (!first) {
+        _w.write(',');
+      }
+      first = false;
+      _fromItemWriter(info.from.firstWhere((f) => f.name == param.name));
+    });
+    info.ctorNamedArguments.forEach((param) {
+      if (!first) {
+        _w.write(',');
+      }
+      first = false;
+      _w.write('${param.name}: ');
+      _fromItemWriter(info.from.firstWhere((f) => f.name == param.name));
+    });
+    _w.write(');');
+  }
+
   void _fromWriter() {
     _w.writeln(
         '$modelName fromMap(Map map, {$modelName model, String typeKey}) {');
@@ -129,11 +150,15 @@ class Writer {
     _w.writeln(r'}');
 
     _w.writeln('if(model is! $modelName) {');
-    _w.writeln(r'model = createModel();');
+    _w.writeln(r'model =');
+    _ctorWriter();
     _w.writeln(r'}');
 
-    for (FieldFrom item in info.from) {
+    final froms = info.from.where((f) => f.isFinal != true);
+    for (FieldFrom item in froms) {
+      _w.write('model.${item.name} = ');
       _fromItemWriter(item);
+      _w.write(';');
     }
 
     _w.writeln(r'return model;');
@@ -143,7 +168,6 @@ class Writer {
   void _fromItemWriter(FieldFrom item) {
     FromItemWriter writer = new FromItemWriter(item);
 
-    _w.write('model.${item.name} = ');
     if (!item.nullable && item.defaultValue != null) {
       _w.write(writer.generate('map["${item.key}"]', "${item.defaultValue}"));
     } else if (!item.nullable && item.defaultValueFromConstructor) {
@@ -151,6 +175,5 @@ class Writer {
     } else {
       _w.write(writer.generate('map["${item.key}"]'));
     }
-    _w.write(';');
   }
 }

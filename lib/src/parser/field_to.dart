@@ -95,7 +95,7 @@ PropertyTo _parsePropertyTo(
   }
 }
 
-FieldTo _parseFieldTo(SerializerInfo info, ModelField field, String key) {
+FieldTo _parseFieldTo(SerializerInfo info, Field field, String key) {
   bool nullable = info.globalNullableFields;
   if (info.nullableFields.containsKey(field.name)) {
     nullable = info.nullableFields[field.name];

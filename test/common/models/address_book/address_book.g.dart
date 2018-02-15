@@ -26,7 +26,7 @@ abstract class _$Person implements Serializer<Person> {
       return null;
     }
     if (model is! Person) {
-      model = createModel();
+      model = new Person();
     }
     model.name = map["name"];
     model.address = _address.fromMap(map["address"], typeKey: typeKey);
@@ -56,7 +56,7 @@ abstract class _$Address implements Serializer<Address> {
       return null;
     }
     if (model is! Address) {
-      model = createModel();
+      model = new Address();
     }
     model.street = map["street"];
     model.houseNum = map["houseNum"];
