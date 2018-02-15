@@ -1,7 +1,4 @@
-import 'package:analyzer/dart/element/type.dart';
-
-import 'package:source_gen/source_gen.dart';
-import 'package:jaguar_serializer/jaguar_serializer.dart';
+part of jaguar_serializer.generator.helpers;
 
 const isSerializer = const TypeChecker.fromRuntime(Serializer);
 
@@ -42,17 +39,3 @@ bool isBuiltin(DartType type) {
 
   return false;
 }
-
-class JaguarCliException implements Exception {
-  final message;
-
-  JaguarCliException([this.message]);
-
-  String toString() {
-    if (message == null) return "JaguarCliException";
-    return "JaguarCliException: $message";
-  }
-}
-
-String firstCharToLowerCase(String str) =>
-    str[0].toLowerCase() + str.substring(1);

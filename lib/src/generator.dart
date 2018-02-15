@@ -10,11 +10,9 @@ import 'package:source_gen/source_gen.dart';
 
 import 'package:jaguar_serializer/jaguar_serializer.dart';
 
-import 'models/models.dart';
-import 'common/common.dart';
-
+import 'helpers/helpers.dart';
 import 'parser/parser.dart';
-import 'package:jaguar_serializer_cli/src/writer/writer.dart';
+import 'writer/writer.dart';
 
 final Logger _log = new Logger("SerializerGenerator");
 

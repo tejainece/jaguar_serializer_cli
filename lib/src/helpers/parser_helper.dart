@@ -1,13 +1,4 @@
-library models;
-
-import 'package:analyzer/dart/element/element.dart';
-import 'package:analyzer/dart/constant/value.dart';
-import 'package:analyzer/dart/element/type.dart';
-
-import 'package:jaguar_serializer/jaguar_serializer.dart';
-
-import '../common/common.dart';
-import 'package:source_gen/source_gen.dart';
+part of jaguar_serializer.generator.helpers;
 
 class ModelField {
   /// Name of the field

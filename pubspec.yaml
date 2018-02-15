@@ -1,5 +1,5 @@
 name: jaguar_serializer_cli
-version: 1.0.0-dev2
+version: 1.0.0-dev3
 description: Platform and format agnostic serializer built using source_gen
 authors:
 - Ravi Teja Gudapati <tejainece@gmail.com>
@@ -15,15 +15,15 @@ dependencies:
   build: ^0.11.0
   logging: ^0.11.0
   source_gen: ">=0.7.0 <0.8.0"
-  #jaguar_serializer: 1.0.0-dev2
+  #jaguar_serializer: 1.0.0-dev3
   # test
-  #jaguar_serializer:
-  #  path: ../jaguar_serializer
-  # test travis
   jaguar_serializer:
-    git: 
-      url: https://github.com/Jaguar-dart/jaguar_serializer
-      ref: 1.0.0-dev
+    path: ../jaguar_serializer
+  # test travis
+  #jaguar_serializer:
+  #  git: 
+  #    url: https://github.com/Jaguar-dart/jaguar_serializer
+  #    ref: 1.0.0-dev
 
 
 transformers:

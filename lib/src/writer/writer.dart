@@ -1,8 +1,8 @@
 ///@nodoc
 library jaguar_serializer.generator.writer;
 
-import 'package:jaguar_serializer_cli/src/common/common.dart';
-import 'package:jaguar_serializer_cli/src/parser/parser.dart';
+import '../helpers/helpers.dart';
+import '../parser/parser.dart';
 
 part 'to_item.dart';
 

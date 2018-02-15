@@ -1,18 +1,15 @@
 ///@nodoc
-library jaguar_serializer.generator.parser.serializer;
+library jaguar_serializer.generator.parser;
 
 import 'package:analyzer/dart/element/element.dart';
 // import 'package:analyzer/dart/constant/value.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:source_gen/source_gen.dart';
 
-import '../common/common.dart';
-import '../models/models.dart';
+import '../helpers/helpers.dart';
 
-export '../models/models.dart' show FieldProcessorInfo;
-
-part 'package:jaguar_serializer_cli/src/parser/field_to.dart';
-part 'package:jaguar_serializer_cli/src/parser/field_from.dart';
+part 'field_to.dart';
+part 'field_from.dart';
 
 class WriterInfo {
   final String name;

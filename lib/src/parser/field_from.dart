@@ -1,4 +1,4 @@
-part of jaguar_serializer.generator.parser.serializer;
+part of jaguar_serializer.generator.parser;
 
 class FieldFrom {
   final PropertyFrom property;
